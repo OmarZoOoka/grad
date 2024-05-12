@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:graduation_project/constants.dart';
 import 'package:graduation_project/screens/freelancer_profile.dart';
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,13 +14,46 @@ class FreelancerSetupScreen extends StatefulWidget {
 }
 
 class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
-  UserProvider userProvider = UserProvider();
   int currentStep = 0;
   TextEditingController phoneNumberController = TextEditingController();
   List<String> selectedSkills = [];
-  String imageString = "";
+  String? imageString;
 
-  Map<int, dynamic> stepData = {};
+  // Add a flag to track setup completion
+  bool isSetupCompleted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Check if setup is completed
+    isSetupCompleted = checkSetupCompletion();
+    // If setup is completed, navigate to profile screen
+    if (isSetupCompleted) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => FreelancerProfile()),
+        );
+      });
+    }
+  }
+
+  bool checkSetupCompletion() {
+    // Check if image is provided
+    bool isImageProvided = imageString != null;
+
+    // Check if phone number is provided
+    bool isPhoneNumberProvided = phoneNumberController.text.isNotEmpty;
+
+    // Check if at least one skill is selected
+    bool areSkillsProvided = selectedSkills.isNotEmpty;
+
+    // Combine checks to determine setup completion
+    bool isSetupCompleted =
+        isImageProvided && isPhoneNumberProvided && areSkillsProvided;
+
+    return isSetupCompleted;
+  }
 
   Future<void> _pickImage() async {
     final pickedImage =
@@ -37,12 +69,17 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // If setup is already completed, return an empty container
+    if (isSetupCompleted) {
+      return Container();
+    }
+
+    // Otherwise, proceed with the setup screen UI
     return Scaffold(
       appBar: AppBar(
         title: Text('Freelancer Setup'),
       ),
       body: Stepper(
-        connectorColor: MaterialStatePropertyAll(KgreenColor),
         currentStep: currentStep,
         onStepContinue: () {
           if (currentStep < 2) {
@@ -71,15 +108,11 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
                     'Add Image',
                     style: TextStyle(color: Colors.white),
                   ),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.green),
-                  ),
                 ),
+                if (imageString != null) Image.file(File(imageString!)),
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    stepData[0] = imageString;
                     setState(() {
                       currentStep += 1;
                     });
@@ -103,7 +136,6 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    stepData[1] = phoneNumberController.text;
                     setState(() {
                       currentStep += 1;
                     });
@@ -147,7 +179,6 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    stepData[2] = selectedSkills;
                     _updateProfile();
                   },
                   child: Text('Confirm'),
@@ -166,7 +197,7 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
         Provider.of<UserProvider>(context, listen: false);
 
     userProvider.changeUserDataForUser(
-      imageString,
+      imageString.toString(),
       phoneNumberController.text,
       selectedSkills,
     );

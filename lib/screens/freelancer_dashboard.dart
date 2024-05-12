@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
+import 'package:graduation_project/screens/dashboard/dashboard_screen.dart';
+import 'package:graduation_project/screens/dashboard/my_job_screen.dart';
+import 'package:graduation_project/screens/dashboard/my_order_screen.dart';
+import 'package:graduation_project/screens/dashboard/post_job_screen.dart';
 
 class FreelancerDashboard extends StatefulWidget {
   const FreelancerDashboard({Key? key}) : super(key: key);
@@ -11,18 +15,8 @@ class FreelancerDashboard extends StatefulWidget {
 class _FreelancerDashboardState extends State<FreelancerDashboard> {
   String selectedContainer = '';
 
-  Widget dashboardContent = Container(
-    color: KgreenColor,
-  );
-  Widget postJobContent = Container(
-    color: KoffwhiteColor,
-  );
-  Widget myJobContent = Container(
-    color: KgreyColor,
-  );
-  Widget myOrdersContent = Container(
-    color: kcyanColor,
-  );
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -148,15 +142,15 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
   Widget selectedContent(String selectedContainer) {
     switch (selectedContainer) {
       case 'Dashboard':
-        return dashboardContent;
+        return Dashboard();
       case 'Post a Job':
-        return postJobContent;
+        return PostJobScreen();
       case 'My Job':
-        return myJobContent;
+        return MyJobScreen();
       case 'My Orders':
-        return myOrdersContent;
+        return MyOrderScreen();
       default:
-        return dashboardContent;
+        return Dashboard();
     }
   }
 

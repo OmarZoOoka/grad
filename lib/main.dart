@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:graduation_project/authentication/register_screen.dart';
+import 'package:graduation_project/services/drawer_model.dart';
 import 'package:graduation_project/services/navigation_service.dart';
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ void main() async {
         ChangeNotifierProvider<NavigationService>(
           create: (_) => NavigationService(),
         ),
+        ChangeNotifierProvider(create: (_) => SetupStatusModel())
       ],
       child: const FreelancerApp(),
     ),

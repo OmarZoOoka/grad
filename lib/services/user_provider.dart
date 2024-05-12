@@ -101,15 +101,15 @@ class UserProvider with ChangeNotifier {
           disposeAlldata();
         } else {
           EasyLoading.dismiss();
-          showFlushBar(responseData['message'] ?? 'Login failed');
+          print(responseData['message'] ?? 'Login failed');
         }
       } else {
         EasyLoading.dismiss();
-        showFlushBar('Login failed');
+        print('Login failed');
       }
     } catch (e) {
       EasyLoading.dismiss();
-      showFlushBar('Something went wrong: $e');
+      print('Something went wrong: $e');
     }
   }
 
@@ -187,11 +187,11 @@ class UserProvider with ChangeNotifier {
       } else {
         EasyLoading.dismiss();
         final responseData = jsonDecode(response.body);
-        showFlushBar(responseData['message'] ?? 'Signup failed');
+        print(responseData['message'] ?? 'Signup failed');
       }
     } catch (e) {
       EasyLoading.dismiss();
-      showFlushBar('Something went wrong: $e');
+      print('Something went wrong: $e');
     }
   }
 
@@ -212,10 +212,10 @@ class UserProvider with ChangeNotifier {
             }));
       } else {
         final responseData = jsonDecode(response.body);
-        showFlushBar(responseData['message'] ?? 'Failed to fetch categories');
+        print(responseData['message'] ?? 'Failed to fetch categories');
       }
     } catch (e) {
-      showFlushBar('Error fetching categories: $e');
+      print('Error fetching categories: $e');
     }
   }
 
@@ -228,7 +228,7 @@ class UserProvider with ChangeNotifier {
       final userId = this.userId;
       final userToken = this.userToken;
       if (userId != null) {
-        final endpoint = 'http://localhost:5140/api/Freelancer/$userId';
+        final endpoint = 'http://10.0.2.2:5140/api/Freelancer/$userId';
 
         final body = <String, dynamic>{
           'imageUrl': imageUrl,
