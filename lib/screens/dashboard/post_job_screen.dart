@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PostJobScreen extends StatefulWidget {
   const PostJobScreen({Key? key}) : super(key: key);
@@ -29,6 +32,19 @@ class _PostJobScreenState extends State<PostJobScreen> {
     'Category 5',
   ];
   List<String>? selectedSKills = [];
+  String? imageString;
+  Future<void> _pickImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      final imageFile = File(pickedImage.path);
+      setState(() {
+        imageString = imageFile.path;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -188,7 +204,8 @@ class _PostJobScreenState extends State<PostJobScreen> {
                                 child: TextFormField(
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
-                                    labelText: 'Expected Duration (Months)',
+                                    hintText: 'Expected Duration ',
+                                    labelText: 'Months',
                                     border: OutlineInputBorder(),
                                   ),
                                   validator: (value) {
@@ -209,7 +226,8 @@ class _PostJobScreenState extends State<PostJobScreen> {
                                 child: TextFormField(
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
-                                    labelText: 'Expected Duration (Days)',
+                                    hintText: 'Expected Duration',
+                                    labelText: 'Days',
                                     border: OutlineInputBorder(),
                                   ),
                                   validator: (value) {
@@ -231,7 +249,8 @@ class _PostJobScreenState extends State<PostJobScreen> {
                           TextFormField(
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                              labelText: 'Expected Budget',
+                              hintText: 'Expected Budget',
+                              labelText: 'Budget',
                               border: OutlineInputBorder(),
                             ),
                             validator: (value) {
@@ -247,18 +266,94 @@ class _PostJobScreenState extends State<PostJobScreen> {
                             },
                           ),
                           SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                // Process the form data
-                              }
-                            },
-                            child: Text('Submit'),
-                          ),
                         ],
                       ),
                     ),
                   ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 200,
+              width: double.infinity,
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      width: 150,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Center(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.add_photo_alternate,
+                            size: 50,
+                          ),
+                          Text(
+                            'Add Image',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                          ),
+                        ],
+                      )),
+                    ),
+                  ),
+                  if (imageString != null)
+                    Container(
+                      width: 150,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: KgreyColor,
+                        borderRadius: BorderRadius.circular(20),
+                        image: DecorationImage(
+                          image: FileImage(
+                            File(imageString!),
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            InkWell(
+              onTap: () {
+                if (_formKey.currentState!.validate()) {
+                  // Process the form data
+                }
+              },
+              child: Container(
+                height: 60,
+                width: 200,
+                decoration: BoxDecoration(
+                    color: KgreenColor,
+                    borderRadius: BorderRadius.circular(50)),
+                child: Center(
+                  child: Text(
+                    'Post Now',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             ),

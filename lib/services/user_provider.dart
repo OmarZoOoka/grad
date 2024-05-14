@@ -15,10 +15,11 @@ class UserProvider with ChangeNotifier {
   TextEditingController nameController = TextEditingController();
   TextEditingController accountController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-
+  Map<String, dynamic>? userData;
   String? userId;
   String? userToken;
   List<Map<String, dynamic>> categories = [];
+  List<Map<String, dynamic>> skills = [];
 
   bool secure = true;
   bool secure2 = true;
@@ -219,10 +220,35 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+  Future<void> fetchSkills() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://10.0.2.2:5140/api/Skill'),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        final List<dynamic> skillData = responseData['result'];
+
+        skills.addAll(skillData.map((e) => {
+              'id': e['id'],
+              'name': e['name'],
+            }));
+        notifyListeners();
+      } else {
+        final responseData = jsonDecode(response.body);
+        print(responseData['message'] ?? 'Failed to fetch Skills');
+      }
+    } catch (e) {
+      throw Exception('Error fetching skills: $e');
+    }
+  }
+
   Future<void> changeUserDataForUser(
+    String name,
     String imageUrl,
     String phoneNumber,
-    List<String> skills,
+    List<dynamic> skills,
   ) async {
     try {
       final userId = this.userId;
@@ -230,35 +256,61 @@ class UserProvider with ChangeNotifier {
       if (userId != null) {
         final endpoint = 'http://10.0.2.2:5140/api/Freelancer/$userId';
 
-        final body = <String, dynamic>{
-          'imageUrl': imageUrl,
+        var formData = http.MultipartRequest('PUT', Uri.parse(endpoint));
+        formData.fields.addAll({
+          'name': name,
           'phoneNumber': phoneNumber,
-          'skills': skills,
-        };
+        });
 
-        final response = await http.put(
-          Uri.parse(endpoint),
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $userToken',
-          },
-          body: jsonEncode(body),
-        );
+        if (imageUrl.isNotEmpty) {
+          formData.files.add(
+            await http.MultipartFile.fromPath('image', imageUrl),
+          );
+        }
+
+        formData.headers.addAll({
+          'Authorization': 'Bearer $userToken',
+        });
+
+        final response = await http.Response.fromStream(await formData.send());
 
         if (response.statusCode == 200) {
           showFlushBar('Data Updated Successfully', isError: false);
+          print(response.body);
+          print(formData.fields['skills']);
         } else {
           print("Error updating user data: ${response.statusCode}");
-          // Optionally, you can print the response body for more information
           print("Response body: ${response.body}");
         }
       } else {
-        // Handle error case
         print("User ID is null");
       }
     } catch (e) {
-      // Handle error case
       print("Error : $e");
+    }
+  }
+
+  Future<void> getUserData() async {
+    try {
+      final userId = this.userId;
+
+      final endpoint = 'http://10.0.2.2:5140/api/Freelancer/$userId';
+
+      final response = await http.get(
+        Uri.parse(endpoint),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        userData = jsonDecode(response.body);
+        notifyListeners();
+      } else {
+        throw Exception('Failed to load user data: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
     }
   }
 

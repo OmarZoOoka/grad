@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
 import 'package:graduation_project/screens/dashboard/dashboard_screen.dart';
-import 'package:graduation_project/screens/dashboard/my_job_screen.dart';
+import 'package:graduation_project/screens/dashboard/projects_screen.dart';
 import 'package:graduation_project/screens/dashboard/my_order_screen.dart';
 import 'package:graduation_project/screens/dashboard/post_job_screen.dart';
+import 'package:graduation_project/services/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class FreelancerDashboard extends StatefulWidget {
   const FreelancerDashboard({Key? key}) : super(key: key);
@@ -15,11 +17,10 @@ class FreelancerDashboard extends StatefulWidget {
 class _FreelancerDashboardState extends State<FreelancerDashboard> {
   String selectedContainer = '';
 
-
-  
-
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: CircleAvatar(
@@ -116,22 +117,42 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
               },
             ),
             buildDrawerItem(
-              'My Job',
-              Icons.work,
-              () {
-                setState(() {
-                  selectedContainer = 'My Job';
-                });
-              },
-            ),
-            buildDrawerItem(
               'My Orders',
-              Icons.shopping_cart,
+              Icons.mark_email_read_outlined,
               () {
                 setState(() {
                   selectedContainer = 'My Orders';
                 });
               },
+            ),
+            buildDrawerItem(
+              'Projects',
+              Icons.document_scanner,
+              () {
+                setState(() {
+                  selectedContainer = 'Projects';
+                });
+              },
+            ),
+            SizedBox(
+              height: 350,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.logout,
+                      size: 60,
+                    ),
+                    onPressed: () async {
+                      await userProvider.logout();
+                    },
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -145,10 +166,10 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
         return Dashboard();
       case 'Post a Job':
         return PostJobScreen();
-      case 'My Job':
-        return MyJobScreen();
       case 'My Orders':
         return MyOrderScreen();
+      case 'Projects':
+        return ProjectScreen();
       default:
         return Dashboard();
     }

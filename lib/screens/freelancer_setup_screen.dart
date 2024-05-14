@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:graduation_project/constants.dart';
 import 'package:graduation_project/screens/freelancer_profile.dart';
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,46 +17,11 @@ class FreelancerSetupScreen extends StatefulWidget {
 class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
   int currentStep = 0;
   TextEditingController phoneNumberController = TextEditingController();
-  List<String> selectedSkills = [];
+  TextEditingController name = TextEditingController();
+
   String? imageString;
 
-  // Add a flag to track setup completion
-  bool isSetupCompleted = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // Check if setup is completed
-    isSetupCompleted = checkSetupCompletion();
-    // If setup is completed, navigate to profile screen
-    if (isSetupCompleted) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => FreelancerProfile()),
-        );
-      });
-    }
-  }
-
-  bool checkSetupCompletion() {
-    // Check if image is provided
-    bool isImageProvided = imageString != null;
-
-    // Check if phone number is provided
-    bool isPhoneNumberProvided = phoneNumberController.text.isNotEmpty;
-
-    // Check if at least one skill is selected
-    bool areSkillsProvided = selectedSkills.isNotEmpty;
-
-    // Combine checks to determine setup completion
-    bool isSetupCompleted =
-        isImageProvided && isPhoneNumberProvided && areSkillsProvided;
-
-    return isSetupCompleted;
-  }
-
-  Future<void> _pickImage() async {
+  Future<void> pickImage() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
@@ -67,141 +33,181 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
     }
   }
 
+  List<Map<String, dynamic>> selectedSkills = [];
+  List<int> selectedSkillIds = [];
+  List<Map<String, dynamic>> skills = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchSkills();
+  }
+
+  Future<void> fetchSkills() async {
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
+    await userProvider.fetchSkills();
+    setState(() {
+      skills = userProvider.skills;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // If setup is already completed, return an empty container
-    if (isSetupCompleted) {
-      return Container();
-    }
-
-    // Otherwise, proceed with the setup screen UI
     return Scaffold(
       appBar: AppBar(
         title: Text('Freelancer Setup'),
       ),
-      body: Stepper(
-        currentStep: currentStep,
-        onStepContinue: () {
-          if (currentStep < 2) {
-            setState(() {
-              currentStep += 1;
-            });
-          } else {
-            _updateProfile();
-          }
-        },
-        onStepCancel: () {
-          if (currentStep > 0) {
-            setState(() {
-              currentStep -= 1;
-            });
-          }
-        },
-        steps: <Step>[
-          Step(
-            title: Text('Add Image'),
-            content: Column(
-              children: [
-                ElevatedButton(
-                  onPressed: _pickImage,
-                  child: Text(
-                    'Add Image',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                if (imageString != null) Image.file(File(imageString!)),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      currentStep += 1;
-                    });
-                  },
-                  child: Text('Confirm'),
-                ),
-              ],
-            ),
-            isActive: currentStep == 0,
-          ),
-          Step(
-            title: Text('Add Phone Number'),
-            content: Column(
-              children: [
-                TextField(
-                  controller: phoneNumberController,
-                  decoration: InputDecoration(
-                    labelText: 'Phone Number',
-                  ),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      currentStep += 1;
-                    });
-                  },
-                  child: Text('Confirm'),
-                ),
-              ],
-            ),
-            isActive: currentStep == 1,
-          ),
-          Step(
-            title: Text('Add Skills'),
-            content: Column(
-              children: [
-                CheckboxListTile(
-                  title: Text('Skill 1'),
-                  value: selectedSkills.contains('Skill 1'),
-                  onChanged: (value) {
-                    setState(() {
-                      if (value!) {
-                        selectedSkills.add('Skill 1');
-                      } else {
-                        selectedSkills.remove('Skill 1');
-                      }
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text('Skill 2'),
-                  value: selectedSkills.contains('Skill 2'),
-                  onChanged: (value) {
-                    setState(() {
-                      if (value!) {
-                        selectedSkills.add('Skill 2');
-                      } else {
-                        selectedSkills.remove('Skill 2');
-                      }
-                    });
-                  },
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    _updateProfile();
-                  },
-                  child: Text('Confirm'),
-                ),
-              ],
-            ),
-            isActive: currentStep == 2,
-          ),
-        ],
+      body: Theme(
+        data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+          primary: kcyanColor,
+        )),
+        child: Stepper(
+          type: StepperType.vertical,
+          steps: getSteps(),
+          currentStep: currentStep,
+          onStepContinue: () {
+            final isFinalStep = currentStep == getSteps().length - 1;
+            if (isFinalStep) {
+              updateProfile();
+              print("complete");
+            } else {
+              setState(() {
+                currentStep += 1;
+              });
+            }
+          },
+          onStepCancel: () {
+            if (currentStep == 0) {
+              return null;
+            } else {
+              setState(() {
+                currentStep -= 1;
+              });
+            }
+          },
+        ),
       ),
     );
   }
 
-  void _updateProfile() {
+  List<Step> getSteps() {
+    return [
+      Step(
+        state: currentStep > 0 ? StepState.complete : StepState.indexed,
+        isActive: currentStep >= 0,
+        title: Text(
+          'Add Image',
+        ),
+        content: Column(
+          children: [
+            ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(KgreenColor)),
+              onPressed: pickImage,
+              child: Text(
+                'Add Image',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            if (imageString != null)
+              Image.file(
+                File(imageString!),
+              ),
+          ],
+        ),
+      ),
+      Step(
+        state: currentStep > 1 ? StepState.complete : StepState.indexed,
+        isActive: currentStep >= 1,
+        title: Text('Add Phone Number'),
+        content: Column(
+          children: [
+            TextField(
+              controller: phoneNumberController,
+              decoration: InputDecoration(
+                labelText: 'Phone Number',
+              ),
+            ),
+          ],
+        ),
+      ),
+      Step(
+        state: currentStep > 2 ? StepState.complete : StepState.indexed,
+        isActive: currentStep >= 2,
+        title: Text('Add your name'),
+        content: Column(
+          children: [
+            TextField(
+              controller: name,
+              decoration: InputDecoration(
+                labelText: 'Name',
+              ),
+            ),
+          ],
+        ),
+      ),
+      Step(
+        isActive: currentStep >= 3,
+        title: Text('Add Skills'),
+        content: Wrap(
+          children: skills.map(
+            (skill) {
+              bool isSelected = selectedSkills.contains(skill);
+              return GestureDetector(
+                onTap: () {
+                  if (!isSelected) {
+                    if (selectedSkills.length < skills.length) {
+                      setState(() {
+                        selectedSkills.add(skill);
+                        selectedSkillIds.add(skill['id']);
+                      });
+                    }
+                  } else {
+                    setState(() {
+                      selectedSkills.remove(skill);
+                      selectedSkillIds.remove(skill['id']);
+                    });
+                  }
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                          color: isSelected ? KgreenColor : Colors.grey,
+                          width: 2),
+                    ),
+                    child: Text(
+                      skill['name'],
+                      style: TextStyle(
+                          color: isSelected ? KgreenColor : Colors.grey,
+                          fontSize: 14),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ).toList(),
+        ),
+      ),
+    ];
+  }
+
+  void updateProfile() {
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
 
     userProvider.changeUserDataForUser(
+      name.text,
       imageString.toString(),
       phoneNumberController.text,
-      selectedSkills,
+      selectedSkillIds,
     );
-
+    print(selectedSkillIds);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => FreelancerProfile()),
