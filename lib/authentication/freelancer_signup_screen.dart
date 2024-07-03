@@ -46,12 +46,8 @@ class _RegisterAsFreelancerScreenState
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              'Freelancer',
+              appName,
               style: TextStyle(fontWeight: FontWeight.bold, color: KgreenColor),
-            ),
-            Text(
-              'Hub',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -96,24 +92,12 @@ class _RegisterAsFreelancerScreenState
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          'Home / ',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                        Text(
-                          'Register',
-                          style: TextStyle(fontSize: 16, color: KgreenColor),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

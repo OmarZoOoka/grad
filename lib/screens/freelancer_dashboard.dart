@@ -80,19 +80,13 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        'Freelancer',
+                        appName,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: KgreenColor,
                             fontSize: 30),
                       ),
-                      Text(
-                        'Hub',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
+                      
                     ],
                   ),
                 ],

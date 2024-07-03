@@ -27,13 +27,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              'Freelancer',
+              appName,
               style: TextStyle(fontWeight: FontWeight.bold, color: KgreenColor),
             ),
-            Text(
-              'Hub',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            
           ],
         ),
         leading: Builder(
@@ -76,18 +73,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          'Home / ',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                        Text(
-                          'Login',
-                          style: TextStyle(fontSize: 16, color: KgreenColor),
-                        ),
-                      ],
-                    ),
+                    
+                      
+                    
                   ],
                 ),
               ),

@@ -65,14 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              'Freelancer',
+              appName,
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
             ),
-            Text(
-              'Hub',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+           
           ],
         ),
         leading: Padding(

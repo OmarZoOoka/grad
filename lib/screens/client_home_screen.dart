@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:graduation_project/constants.dart';
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -85,14 +86,11 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              'Freelancer',
+              appName,
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
             ),
-            Text(
-              'Hub',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            
           ],
         ),
         leading: Padding(
