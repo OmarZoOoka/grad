@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+class ClientDashboardScreen extends StatefulWidget {
+  const ClientDashboardScreen({super.key});
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<ClientDashboardScreen> createState() => _ClientDashboardScreenState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _ClientDashboardScreenState extends State<ClientDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -189,7 +189,7 @@ class _DashboardState extends State<Dashboard> {
                         width: 100,
                         height: 100,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

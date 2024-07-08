@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:graduation_project/constants.dart';
 import 'package:graduation_project/screens/freelancer_profile.dart';
 import 'package:graduation_project/screens/freelancer_setup_screen.dart';
+import 'package:graduation_project/screens/project_information_screen.dart';
 import 'package:graduation_project/services/drawer_model.dart';
 import 'package:graduation_project/widgets/category_imgaes_crousal.dart';
 import 'package:graduation_project/services/user_provider.dart';
@@ -57,7 +58,20 @@ class _HomeScreenState extends State<HomeScreen> {
       'assets/images/person-2.jpg',
       'assets/images/person-3.jpg'
     ];
-
+    List<Map<String, String>> jobDetails = [
+      {'name': 'Project Manager', 'price': '20\$ - 40\$', 'client': 'Atia'},
+      {
+        'name': 'Mobile App DevelopMent',
+        'price': '10\$ - 20\$',
+        'client': 'Omar'
+      },
+      {
+        'name': 'Website Developer',
+        'price': '11\$ - 25\$',
+        'client': 'Abohend'
+      },
+      {'name': 'Ui Ux', 'price': '5\$ - 15\$', 'client': 'Shorbagy'},
+    ];
     return Scaffold(
       backgroundColor: KoffwhiteColor,
       appBar: AppBar(
@@ -69,14 +83,12 @@ class _HomeScreenState extends State<HomeScreen> {
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
             ),
-           
           ],
         ),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Image.asset(
             "assets/images/logo.png",
-            color: Colors.lightGreen,
           ),
         ),
         actions: [
@@ -495,7 +507,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 40,
                   ),
                   Container(
-                    height: 1275,
+                    height: 1165,
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                     decoration: BoxDecoration(
@@ -532,39 +544,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         SizedBox(
                           height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: InkWell(
-                            onTap: () {},
-                            child: Container(
-                              height: 60,
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              decoration: BoxDecoration(
-                                color: Color(0xff22bf0c),
-                                borderRadius: BorderRadius.circular(40),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Post Job Now',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_right_alt,
-                                    color: Colors.white,
-                                    size: 40,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 60,
                         ),
                         Container(
                           height: 120,
@@ -667,24 +646,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Recent Job Post",
+                          "Recent Projects Posted",
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
+                        SizedBox(height: 15),
                         Text(
                           "Get some Inspirations from 86K+ skills",
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
+                          style: TextStyle(fontSize: 18),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        SizedBox(height: 20),
                         CarouselSlider(
-                          items: jobImages.map((image) {
+                          items: List.generate(jobImages.length, (index) {
                             return Builder(
                               builder: (BuildContext context) {
                                 return InkWell(
@@ -696,7 +669,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     padding: EdgeInsets.all(20),
                                     margin: EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                      color: KoffwhiteColor,
+                                      color: Colors.white,
                                       borderRadius: BorderRadius.circular(20),
                                       boxShadow: [
                                         BoxShadow(
@@ -716,18 +689,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                               borderRadius:
                                                   BorderRadius.circular(100)),
                                           child: Image.asset(
-                                            image,
+                                            jobImages[index],
                                             scale: 5,
                                           ),
                                         ),
                                         SizedBox(height: 30),
                                         Text(
-                                          "10\$ - 30\$",
-                                          style: TextStyle(fontSize: 20),
+                                          jobDetails[index]['client']!,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                         SizedBox(height: 15),
                                         Text(
-                                          "Senior Sales and Marketing Executive",
+                                          jobDetails[index]['price']!,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        SizedBox(height: 15),
+                                        Text(
+                                          jobDetails[index]['name']!,
                                           style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold),
@@ -737,14 +720,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 5),
                                           child: InkWell(
-                                            onTap: () {},
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProjectInformation(),
+                                                ),
+                                              );
+                                            },
                                             child: Container(
                                               height: 60,
                                               width: 250,
                                               padding: EdgeInsets.symmetric(
                                                   horizontal: 16.0),
                                               decoration: BoxDecoration(
-                                                color: Colors.white,
+                                                color: KgreenColor,
                                                 borderRadius:
                                                     BorderRadius.circular(40),
                                               ),
@@ -755,12 +746,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   Text(
                                                     'Apply Now',
                                                     style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20),
+                                                        color: Colors.white,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w500),
                                                   ),
                                                   Icon(
                                                     Icons.arrow_right_alt,
-                                                    color: Colors.black,
+                                                    color: Colors.white,
                                                     size: 40,
                                                   ),
                                                 ],
@@ -774,10 +767,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               },
                             );
-                          }).toList(),
+                          }),
                           carouselController: buttonCarouselController,
                           options: CarouselOptions(
-                            aspectRatio: 16 / 16,
+                            aspectRatio: 16 / 19,
                             autoPlay: true,
                             autoPlayInterval: Duration(seconds: 5),
                             autoPlayAnimationDuration:
@@ -1532,7 +1525,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         width: 65,
                         height: 65,
-                        color: Colors.lightGreen,
                       ),
                       SizedBox(
                         width: 30,

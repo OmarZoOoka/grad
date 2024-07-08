@@ -49,7 +49,6 @@ class _RegisterAsClientScreenState extends State<RegisterAsClientScreen> {
               },
               child: Image.asset(
                 "assets/images/logo.png",
-                color: KgreenColor,
               ),
             ),
           ),

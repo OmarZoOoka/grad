@@ -2,19 +2,19 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
-import 'package:graduation_project/screens/freelancer_profile.dart';
+import 'package:graduation_project/screens/client_profile.dart';
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class FreelancerSetupScreen extends StatefulWidget {
-  const FreelancerSetupScreen();
+class ClientSetupScreen extends StatefulWidget {
+  const ClientSetupScreen();
 
   @override
-  State<FreelancerSetupScreen> createState() => _FreelancerSetupScreenState();
+  State<ClientSetupScreen> createState() => _ClientSetupScreenState();
 }
 
-class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
+class _ClientSetupScreenState extends State<ClientSetupScreen> {
   int currentStep = 0;
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController name = TextEditingController();
@@ -33,23 +33,12 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
     }
   }
 
-  List<Map<String, dynamic>> selectedSkills = [];
-  List<int> selectedSkillIds = [];
-  List<Map<String, dynamic>> skills = [];
-
   @override
   void initState() {
     super.initState();
-    fetchSkills();
   }
 
-  Future<void> fetchSkills() async {
-    var userProvider = Provider.of<UserProvider>(context, listen: false);
-    await userProvider.fetchSkills();
-    setState(() {
-      skills = userProvider.skills;
-    });
-  }
+  //
 
   @override
   Widget build(BuildContext context) {
@@ -147,53 +136,6 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
           ],
         ),
       ),
-      Step(
-        isActive: currentStep >= 3,
-        title: Text('Add Skills'),
-        content: Wrap(
-          children: skills.map(
-            (skill) {
-              bool isSelected = selectedSkills.contains(skill);
-              return GestureDetector(
-                onTap: () {
-                  if (!isSelected) {
-                    if (selectedSkills.length < skills.length) {
-                      setState(() {
-                        selectedSkills.add(skill);
-                        selectedSkillIds.add(skill['id']);
-                      });
-                    }
-                  } else {
-                    setState(() {
-                      selectedSkills.remove(skill);
-                      selectedSkillIds.remove(skill['id']);
-                    });
-                  }
-                },
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 4),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(
-                          color: isSelected ? KgreenColor : Colors.grey,
-                          width: 2),
-                    ),
-                    child: Text(
-                      skill['name'],
-                      style: TextStyle(
-                          color: isSelected ? KgreenColor : Colors.grey,
-                          fontSize: 14),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ).toList(),
-        ),
-      ),
     ];
   }
 
@@ -205,12 +147,10 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
       name.text,
       imageString.toString(),
       phoneNumberController.text,
-      skills: selectedSkillIds,
     );
-    print(selectedSkillIds);
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => FreelancerProfile()),
+      MaterialPageRoute(builder: (context) => ClientProfile()),
     );
   }
 }

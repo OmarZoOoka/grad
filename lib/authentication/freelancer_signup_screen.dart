@@ -60,7 +60,6 @@ class _RegisterAsFreelancerScreenState
               },
               child: Image.asset(
                 "assets/images/logo.png",
-                color: KgreenColor,
               ),
             ),
           ),

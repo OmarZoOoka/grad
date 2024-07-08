@@ -93,7 +93,7 @@ class UserProvider with ChangeNotifier {
           } else if (role == 'Client') {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (BuildContext context) => const ClientHomeScreen(),
+                builder: (BuildContext context) =>  ClientHomeScreen(),
               ),
             );
           }
@@ -179,7 +179,7 @@ class UserProvider with ChangeNotifier {
         } else if (role == 'Client') {
           Navigator.of(NavigationService.context!).pushReplacement(
             MaterialPageRoute(
-              builder: (BuildContext context) => const ClientHomeScreen(),
+              builder: (BuildContext context) =>  ClientHomeScreen(),
             ),
           );
         }
@@ -248,7 +248,7 @@ class UserProvider with ChangeNotifier {
     String name,
     String imageUrl,
     String phoneNumber,
-    List<dynamic> skills,
+    {List<int>? skills,}
   ) async {
     try {
       final userId = this.userId;
@@ -260,6 +260,8 @@ class UserProvider with ChangeNotifier {
         formData.fields.addAll({
           'name': name,
           'phoneNumber': phoneNumber,
+
+
         });
 
         if (imageUrl.isNotEmpty) {
@@ -290,7 +292,31 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getUserData() async {
+  Future<void> getClientData() async {
+    try {
+      final userId = this.userId;
+
+      final endpoint = 'http://10.0.2.2:5140/api/Client/$userId';
+
+      final response = await http.get(
+        Uri.parse(endpoint),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        userData = jsonDecode(response.body);
+        notifyListeners();
+      } else {
+        print(response.statusCode);
+        throw Exception('Failed to load user data: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+ Future<void> getFreelancerData() async {
     try {
       final userId = this.userId;
 
@@ -307,13 +333,13 @@ class UserProvider with ChangeNotifier {
         userData = jsonDecode(response.body);
         notifyListeners();
       } else {
+        print(response.statusCode);
         throw Exception('Failed to load user data: ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('Error: $e');
     }
   }
-
   logout() async {
     Navigator.pushAndRemoveUntil(
       NavigationService.context!,

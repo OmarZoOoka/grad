@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
 import 'package:graduation_project/widgets/prject_widget.dart';
 
-class ProjectScreen extends StatefulWidget {
-  const ProjectScreen({super.key});
+class ClientMyOrderScreen extends StatefulWidget {
+  const ClientMyOrderScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProjectScreen> createState() => _ProjectScreenState();
+  State<ClientMyOrderScreen> createState() => _ClientMyOrderScreenState();
 }
 
-class _ProjectScreenState extends State<ProjectScreen> {
+class _ClientMyOrderScreenState extends State<ClientMyOrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,13 +69,13 @@ class _ProjectScreenState extends State<ProjectScreen> {
                               width: 135,
                             ),
                             Text(
-                              "Days",
+                              "Expected Deliever Date",
                               style: TextStyle(
                                 fontSize: 20,
                               ),
                             ),
                             SizedBox(
-                              width: 200,
+                              width: 90,
                             ),
                             Text(
                               "Action",
@@ -93,86 +93,76 @@ class _ProjectScreenState extends State<ProjectScreen> {
                         height: 20,
                       ),
                       ProjectWidget(
-                        "assets/images/job-1.png",
+                        "assets/images/1.png",
                         "Brote - Cleanin\nServices\nTemplate Kit",
                         "\$53",
                         "Pending Payment",
-                        "04",
+                        "Novomber 11, 2024, 11:20 AM",
                         Colors.orange,
-                        Icons.edit_square,
+                        Icons.mail_outline_rounded,
                         Icons.visibility,
-                        EdgeInsets.only(left: 100),
-                        containerColor: kcyanColor,
-                        containerPadding: EdgeInsets.all(20),
-                        width: 190,
+                        EdgeInsets.only(left: 70),
+                        width: 280,
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       ProjectWidget(
-                        "assets/images/job-2.png",
+                        "assets/images/2.png",
                         "Nas Best\nDigital Agency\nWebsite Design",
                         "\$23",
                         "Pending Payment",
-                        "01",
+                        "September 12, 2024, 5:41 PM",
                         Colors.green,
-                        Icons.edit_square,
+                        Icons.mail_outline_rounded,
                         Icons.visibility,
-                        EdgeInsets.only(left: 100),
-                        containerColor: kcyanColor,
-                        containerPadding: EdgeInsets.all(20),
-                        width: 190,
+                        EdgeInsets.only(left: 70),
+                        width: 280,
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       ProjectWidget(
-                        "assets/images/job-3.png",
+                        "assets/images/3.png",
                         "File Manager\nCloud Storage\nApp Mobile",
                         "\$69",
                         "Canceled",
-                        "03",
+                        "Mars 5, 2024, 12:00 AM",
                         Colors.red,
-                        Icons.edit_square,
+                        Icons.mail_outline_rounded,
                         Icons.visibility,
-                        EdgeInsets.only(left: 100),
-                        containerColor: kcyanColor,
-                        containerPadding: EdgeInsets.all(20),
-                        width: 190,
+                        EdgeInsets.only(left: 70),
+                        width: 280,
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       ProjectWidget(
-                        "assets/images/job-4.png",
+                        "assets/images/4.png",
                         "Hiring Platform\nDashboard\nFlutter",
                         "\$44",
                         "Canceled",
-                        "02",
+                        "April 2, 2024, 01:10 PM",
                         Colors.red,
-                        Icons.edit_square,
+                        Icons.mail_outline_rounded,
                         Icons.visibility,
-                        EdgeInsets.only(left: 100),
-                        containerColor: kcyanColor,
-                        containerPadding: EdgeInsets.all(20),
-                        width: 190,
+                        EdgeInsets.only(left: 70),
+                        width: 280,
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       ProjectWidget(
-                        "assets/images/job-5.png",
+                        "assets/images/5.png",
                         "Ui Ux\nWeb Designer\n.NET",
                         "\$41",
                         "In The Progress",
-                        "05",
+                        "January 13, 2024, 10:43 PM",
                         Colors.green,
-                        Icons.edit_square,
+                        Icons.mail_outline_rounded,
                         Icons.visibility,
-                        EdgeInsets.only(left: 100),
-                        containerColor: kcyanColor,
-                        containerPadding: EdgeInsets.all(20),
-                        width: 190,
+                        EdgeInsets.only(left: 70),
+                        width: 280,
                       ),
                       SizedBox(
                         height: 20,

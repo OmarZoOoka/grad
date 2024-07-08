@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
 import 'package:graduation_project/widgets/prject_widget.dart';
 
-class MyOrderScreen extends StatefulWidget {
-  const MyOrderScreen({Key? key}) : super(key: key);
+class FreelancerMyOrderScreen extends StatefulWidget {
+  const FreelancerMyOrderScreen({Key? key}) : super(key: key);
 
   @override
-  State<MyOrderScreen> createState() => _MyOrderScreenState();
+  State<FreelancerMyOrderScreen> createState() => _FreelancerMyOrderScreenState();
 }
 
-class _MyOrderScreenState extends State<MyOrderScreen> {
+class _FreelancerMyOrderScreenState extends State<FreelancerMyOrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(

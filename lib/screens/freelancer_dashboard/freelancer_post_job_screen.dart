@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
 import 'package:image_picker/image_picker.dart';
 
-class PostJobScreen extends StatefulWidget {
-  const PostJobScreen({Key? key}) : super(key: key);
+class FreelancerPostJobScreen extends StatefulWidget {
+  const FreelancerPostJobScreen({Key? key}) : super(key: key);
 
   @override
-  State<PostJobScreen> createState() => _PostJobScreenState();
+  State<FreelancerPostJobScreen> createState() => _FreelancerPostJobScreenState();
 }
 
-class _PostJobScreenState extends State<PostJobScreen> {
+class _FreelancerPostJobScreenState extends State<FreelancerPostJobScreen> {
   final _formKey = GlobalKey<FormState>();
   String? selectedSkill;
   int months = 0;

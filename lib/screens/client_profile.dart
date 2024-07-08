@@ -1,18 +1,19 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
-import 'package:graduation_project/screens/freelancer_dashboard.dart';
+import 'package:graduation_project/screens/client_dashboard.dart';
+import 'package:graduation_project/screens/client_home_screen.dart';
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
-class FreelancerProfile extends StatefulWidget {
-  const FreelancerProfile({Key? key}) : super(key: key);
+class ClientProfile extends StatefulWidget {
+  const ClientProfile({Key? key}) : super(key: key);
 
   @override
-  _FreelancerProfileState createState() => _FreelancerProfileState();
+  _ClientProfileState createState() => _ClientProfileState();
 }
 
-class _FreelancerProfileState extends State<FreelancerProfile> {
+class _ClientProfileState extends State<ClientProfile> {
   CarouselController buttonCarouselController = CarouselController();
 
   List<String> serviceImages = [
@@ -28,7 +29,7 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
         appBar: AppBar(
           leading: GestureDetector(
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ClientHomeScreen(),));
             },
             child: Icon(
               Icons.arrow_back,
@@ -61,7 +62,7 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => FreelancerDashboard()));
+                        builder: (context) => ClientDashboard()));
               },
               child: Text(
                 "Dashboard",
@@ -76,14 +77,14 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
           final userData = userProvider.userData;
           if (userData == null) {
             // If user data is null, fetch it
-            userProvider.getFreelancerData();
+            userProvider.getClientData();
             return Center(child: CircularProgressIndicator());
           } else {
             // Data has been fetched, proceed with building UI
             final String name = userData['result']['name'] ?? 'Unknown';
-            final String imageUrl = userData['result']['imageUrl'] ?? Container();
+            final String imageUrl =
+                userData['result']['imageUrl'] ?? Container();
             final String phoneNumber = userData['result']['phoneNumber'] ?? '';
-            List<dynamic> skills = userData['result']['skills'] ?? [];
 
             return SingleChildScrollView(
               child: Column(
@@ -267,47 +268,47 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
                               SizedBox(
                                 height: 20,
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                              Column(
+
                                 children: [
-                                  Text(
-                                    "Skills",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  SizedBox(height: 15,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                    children: [
+                                      Text("Location: "),
+                                      Text("Tanta", style: TextStyle(fontWeight: FontWeight.bold),),
+                                    ],
                                   ),
-                                  SizedBox(width: 10),
-                                  Expanded(
-                                    child: Wrap(
-                                      spacing: 10,
-                                      children: skills.map((skill) {
-                                        String skillName = skill['name'];
-                                        return Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 5),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 5),
-                                          decoration: BoxDecoration(
-                                            color: KoffwhiteColor,
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                offset: Offset(-0.9, 0.5),
-                                                blurRadius: 1,
-                                              ),
-                                            ],
-                                          ),
-                                          child: Text(skillName),
-                                        );
-                                      }).toList(),
-                                    ),
+                                  SizedBox(height: 15,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                    children: [
+                                      Text("Member since: "),
+                                      Text("March 02, 2024", style: TextStyle(fontWeight: FontWeight.bold),),
+                                    ],
                                   ),
+                                  SizedBox(height: 15,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                    children: [
+                                      Text("Gender: "),
+                                      Text("Male", style: TextStyle(fontWeight: FontWeight.bold),),
+                                    ],
+                                  ),
+                                  SizedBox(height: 15,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                    children: [
+                                      Text("Languages: "),
+                                      Text("English, Arabic", style: TextStyle(fontWeight: FontWeight.bold),),
+                                    ],
+                                  )
                                 ],
-                              ),
+                              )
                             ],
                           ),
                         ),
