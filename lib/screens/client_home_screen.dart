@@ -1696,6 +1696,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
+
+                     
                       if (setupStatus.isSetupCompleted) {
                         // If setup is completed, navigate to profile screen
                         Navigator.pushReplacement(

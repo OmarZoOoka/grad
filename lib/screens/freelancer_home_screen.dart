@@ -5,16 +5,17 @@ import 'package:graduation_project/screens/freelancer_profile.dart';
 import 'package:graduation_project/screens/freelancer_setup_screen.dart';
 import 'package:graduation_project/screens/project_information_screen.dart';
 import 'package:graduation_project/services/drawer_model.dart';
+import 'package:graduation_project/services/job_provider.dart';
 import 'package:graduation_project/widgets/category_imgaes_crousal.dart';
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  final List<int> selectedCategories;
+ 
 
   const HomeScreen({
     Key? key,
-    required this.selectedCategories,
+    
   }) : super(key: key);
 
   @override
@@ -58,6 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
       'assets/images/person-2.jpg',
       'assets/images/person-3.jpg'
     ];
+        var jobProvider = Provider.of<JobProvider>(context, listen: false);
+
+    List? jobsData = jobProvider.jobsData;
     List<Map<String, String>> jobDetails = [
       {'name': 'Project Manager', 'price': '20\$ - 40\$', 'client': 'Atia'},
       {

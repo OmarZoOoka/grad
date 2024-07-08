@@ -5,6 +5,7 @@ import 'package:graduation_project/Components/flush_bar.dart';
 import 'package:graduation_project/authentication/register_screen.dart';
 import 'package:graduation_project/screens/client_home_screen.dart';
 import 'package:graduation_project/screens/freelancer_home_screen.dart';
+import 'package:graduation_project/services/job_provider.dart';
 import 'package:graduation_project/services/navigation_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -20,6 +21,7 @@ class UserProvider with ChangeNotifier {
   String? userToken;
   List<Map<String, dynamic>> categories = [];
   List<Map<String, dynamic>> skills = [];
+  String role = "";
 
   bool secure = true;
   bool secure2 = true;
@@ -75,10 +77,10 @@ class UserProvider with ChangeNotifier {
 
         if (statusCode == 202) {
           await EasyLoading.dismiss();
-          final role = responseData['result']['role'];
+           role = responseData['result']['role'];
           final id = responseData['result']['Id'];
           final token = responseData['result']['token'];
-
+JobProvider().token=token;
           Provider.of<UserProvider>(context, listen: false).setUserId(id);
           Provider.of<UserProvider>(context, listen: false).setUserToken(token);
 
@@ -86,7 +88,6 @@ class UserProvider with ChangeNotifier {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (BuildContext context) => HomeScreen(
-                  selectedCategories: [],
                 ),
               ),
             );
@@ -172,7 +173,6 @@ class UserProvider with ChangeNotifier {
           Navigator.of(NavigationService.context!).pushReplacement(
             MaterialPageRoute(
               builder: (BuildContext context) => HomeScreen(
-                selectedCategories: [selectedCategoryId!],
               ),
             ),
           );
@@ -188,14 +188,14 @@ class UserProvider with ChangeNotifier {
       } else {
         EasyLoading.dismiss();
         final responseData = jsonDecode(response.body);
-        print(responseData['message'] ?? 'Signup failed');
+        print(responseData['message'] );
       }
     } catch (e) {
       EasyLoading.dismiss();
       print('Something went wrong: $e');
     }
   }
-
+//fetchCategories done
   Future<void> fetchCategories() async {
     try {
       final response = await http.get(
@@ -220,6 +220,7 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+//fetchSkills 
   Future<void> fetchSkills() async {
     try {
       final response = await http.get(
@@ -234,6 +235,7 @@ class UserProvider with ChangeNotifier {
               'id': e['id'],
               'name': e['name'],
             }));
+            print("skills are ${skillData}");
         notifyListeners();
       } else {
         final responseData = jsonDecode(response.body);
@@ -292,11 +294,11 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getClientData() async {
+  Future<void> showData() async {
     try {
       final userId = this.userId;
 
-      final endpoint = 'http://10.0.2.2:5140/api/Client/$userId';
+      final endpoint = 'http://10.0.2.2:5140/api/$role/$userId';
 
       final response = await http.get(
         Uri.parse(endpoint),
@@ -306,6 +308,7 @@ class UserProvider with ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
+        debugPrint("data is ${response.body}");
         userData = jsonDecode(response.body);
         notifyListeners();
       } else {
@@ -316,30 +319,7 @@ class UserProvider with ChangeNotifier {
       throw Exception('Error: $e');
     }
   }
- Future<void> getFreelancerData() async {
-    try {
-      final userId = this.userId;
-
-      final endpoint = 'http://10.0.2.2:5140/api/Freelancer/$userId';
-
-      final response = await http.get(
-        Uri.parse(endpoint),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=utf-8',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        userData = jsonDecode(response.body);
-        notifyListeners();
-      } else {
-        print(response.statusCode);
-        throw Exception('Failed to load user data: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Error: $e');
-    }
-  }
+ 
   logout() async {
     Navigator.pushAndRemoveUntil(
       NavigationService.context!,
@@ -350,4 +330,8 @@ class UserProvider with ChangeNotifier {
       showFlushBar("Logged Out Successfully", isError: false);
     });
   }
+  
 }
+
+
+

@@ -44,7 +44,7 @@ class _ClientSetupScreenState extends State<ClientSetupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Freelancer Setup'),
+        title: Text('Client Setup'),
       ),
       body: Theme(
         data: Theme.of(context).copyWith(

@@ -3,7 +3,6 @@ import 'package:graduation_project/Components/components.dart';
 import 'package:graduation_project/authentication/client_signup_screen.dart';
 import 'package:graduation_project/authentication/register_screen.dart';
 import 'package:graduation_project/constants.dart';
-import 'package:graduation_project/screens/freelancer_home_screen.dart';
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -283,11 +282,9 @@ class _RegisterAsFreelancerScreenState
                                 .signupAsFreelancer(selectedCategoryId!);
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                  builder: (BuildContext context) => HomeScreen(
-                                          selectedCategories: [
-                                            selectedCategoryId!
-                                          ])),
+                                  builder: (BuildContext context) => RegisterScreen()),
                             );
+                             
                           }
                         },
                       ),

@@ -22,6 +22,15 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
     'assets/images/4.png',
     'assets/images/5.png',
   ];
+  final jobsTitle = [
+    "Engineering",
+    "Digital Marketing",
+    "Branding Design",
+    "AI Services",
+    "Design & Creative",
+    "Sales & Marketing",
+    "Software Engineering",
+  ];
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: KoffwhiteColor,
@@ -76,12 +85,13 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
           final userData = userProvider.userData;
           if (userData == null) {
             // If user data is null, fetch it
-            userProvider.getFreelancerData();
+            userProvider.showData();
             return Center(child: CircularProgressIndicator());
           } else {
             // Data has been fetched, proceed with building UI
             final String name = userData['result']['name'] ?? 'Unknown';
-            final String imageUrl = userData['result']['imageUrl'] ?? Container();
+            final String imageUrl = userData['result']['imageUrl'] ?? "";
+            final int jobTitle = userData['result']['categoryId'] ?? "";
             final String phoneNumber = userData['result']['phoneNumber'] ?? '';
             List<dynamic> skills = userData['result']['skills'] ?? [];
 
@@ -112,9 +122,9 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
                             width: 65,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50)),
-                            child: imageUrl.isNotEmpty
+                            child: imageUrl.length != 0
                                 ? Image.network(imageUrl)
-                                : Container(),
+                                : CircleAvatar(),
                           ),
                         ),
                         SizedBox(
@@ -134,7 +144,7 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
                                 height: 10,
                               ),
                               Text(
-                                "Ui/Ux Designer",
+                                "${jobsTitle[jobTitle]}",
                                 style: TextStyle(
                                   fontSize: 15,
                                 ),

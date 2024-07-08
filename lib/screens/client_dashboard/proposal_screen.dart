@@ -61,9 +61,8 @@ class _ProposalScreenState extends State<ProposalScreen> {
                   ProposalRows(text1: "Price:", text2: "\$24"),
                   ProposalRows(text1: "Deliver By:", text2: "2024-07-02"),
                   ProposalRows(
-                      text1: "Freelancer:",
+                      text1: "Freelancer ID:",
                       text2: "37a561ab-dfa2-54fd-bedg-2351"),
-                  ProposalRows(text1: "ID:", text2: "215dfa051"),
                   ProposalRows(text1: "Work ID:", text2: "5"),
                   SizedBox(
                     height: 20,

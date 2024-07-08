@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
+import 'package:graduation_project/screens/freelancer_dashboard/edit_freelancer_profile.dart';
+import 'package:graduation_project/screens/freelancer_dashboard/freelancer_dashboard_screen.dart';
 import 'package:graduation_project/screens/freelancer_dashboard/freelancer_my_order_screen.dart';
 import 'package:graduation_project/screens/freelancer_dashboard/freelancer_post_job_screen.dart';
 import 'package:graduation_project/screens/freelancer_dashboard/freelancer_projects_screen.dart';
+import 'package:graduation_project/screens/freelancer_profile.dart';
+
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +33,7 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
         centerTitle: true,
         leading: GestureDetector(
           onTap: () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FreelancerProfile(),));
           },
           child: Icon(
             Icons.arrow_back,
@@ -74,7 +78,6 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
                     ),
                     height: 80,
                     width: 80,
-                    color: KgreenColor,
                   ),
                   SizedBox(
                     width: 20,
@@ -104,17 +107,17 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
                 });
                 Navigator.pop(context);
               },
-            ),
+            ),SizedBox(height: 20,),
             buildDrawerItem(
-              'Post a Job',
+              'Post Job',
               Icons.post_add,
                   () {
                 setState(() {
-                  selectedContainer = 'Post a Job';
+                  selectedContainer = 'Post Job';
                 });
                 Navigator.pop(context);
               },
-            ),
+            ),SizedBox(height: 20,),
             buildDrawerItem(
               'My Orders',
               Icons.mark_email_read_outlined,
@@ -124,13 +127,23 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
                 });
                 Navigator.pop(context);
               },
-            ),
+            ),SizedBox(height: 20,),
             buildDrawerItem(
               'Projects',
               Icons.document_scanner,
                   () {
                 setState(() {
                   selectedContainer = 'Projects';
+                });
+                Navigator.pop(context);
+              },
+            ),SizedBox(height: 20,),
+            buildDrawerItem(
+              'Edit Profile',
+              Icons.mark_email_read_outlined,
+                  () {
+                setState(() {
+                  selectedContainer = 'Edit Profile';
                 });
                 Navigator.pop(context);
               },
@@ -164,15 +177,18 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
   Widget selectedContent(String selectedContainer) {
     switch (selectedContainer) {
       case 'Dashboard':
-        return FreelancerDashboard();
-      case 'Post a Job':
+        return FreelancerDashboardScreen();
+      case 'Post Job':
         return FreelancerPostJobScreen();
       case 'My Orders':
         return FreelancerMyOrderScreen();
       case 'Projects':
         return FreelancerProjectScreen();
+   
+      case 'Edit Profile':
+        return EditFreelancerProfile();
       default:
-        return Center(child: Text('Please select an option from the drawer.'));
+        return FreelancerDashboardScreen();
     }
   }
 
@@ -208,15 +224,6 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class ClientDashboardContent extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Dashboard Content Here'),
     );
   }
 }

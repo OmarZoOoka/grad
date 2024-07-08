@@ -1,52 +1,43 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:graduation_project/services/job_provider.dart';
+import 'package:graduation_project/services/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class ClientPostProjectScreen extends StatefulWidget {
   const ClientPostProjectScreen({Key? key}) : super(key: key);
 
   @override
-  State<ClientPostProjectScreen> createState() => _ClientPostProjectScreenState();
+  State<ClientPostProjectScreen> createState() =>
+      _ClientPostProjectScreenState();
 }
 
 class _ClientPostProjectScreenState extends State<ClientPostProjectScreen> {
   final _formKey = GlobalKey<FormState>();
-  String? selectedSkill;
+  String? selectedCategory;
   int months = 0;
   int days = 0;
   double? budget;
-  final List<String> skills = [
-    'Skill 1',
-    'Skill 2',
-    'Skill 3',
-    'Skill 4',
-    'Skill 5',
-  ];
+  int? selectedCategoryId;
   final List<String> categories = [
-    'Category 1',
-    'Category 2',
-    'Category 3',
-    'Category 4',
-    'Category 5',
+    "Engineering",
+    "Digital Marketing",
+    "Branding Design",
+    "AI Services",
+    "Design & Creative",
+    "Sales & Marketing",
+    "Software Engineering",
   ];
   List<String>? selectedSKills = [];
+  List<int> selectedSkillsId = [];
   String? imageString;
-  Future<void> _pickImage() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (pickedImage != null) {
-      final imageFile = File(pickedImage.path);
-      setState(() {
-        imageString = imageFile.path;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final jobProvider = Provider.of<JobProvider>(context);
+
+    final skills = userProvider.skills;
     return Container(
       width: double.infinity,
       height: double.maxFinite,
@@ -93,6 +84,7 @@ class _ClientPostProjectScreenState extends State<ClientPostProjectScreen> {
                       child: Column(
                         children: [
                           TextFormField(
+                            controller: jobProvider.titleController,
                             decoration: InputDecoration(
                               labelText: 'Title',
                               border: OutlineInputBorder(),
@@ -106,6 +98,7 @@ class _ClientPostProjectScreenState extends State<ClientPostProjectScreen> {
                           ),
                           SizedBox(height: 20),
                           TextFormField(
+                            controller: jobProvider.descController,
                             maxLines: null,
                             decoration: InputDecoration(
                               labelText: 'Description',
@@ -120,10 +113,13 @@ class _ClientPostProjectScreenState extends State<ClientPostProjectScreen> {
                           ),
                           SizedBox(height: 20),
                           DropdownButtonFormField<String>(
-                            value: selectedSkill,
+                            value: selectedCategory,
                             onChanged: (value) {
                               setState(() {
-                                selectedSkill = value;
+                                selectedCategory = value;
+                                selectedCategoryId = categories
+                                    .indexWhere((item) => item == "$value");
+                                print(selectedCategoryId);
                               });
                             },
                             decoration: InputDecoration(
@@ -150,22 +146,31 @@ class _ClientPostProjectScreenState extends State<ClientPostProjectScreen> {
                             children: skills.map(
                               (skill) {
                                 bool isSelected = false;
-                                if (selectedSKills!.contains(skill)) {
+                                if (selectedSKills!.contains(skill["name"])) {
                                   isSelected = true;
                                 }
                                 return GestureDetector(
                                   onTap: () {
-                                    if (!selectedSKills!.contains(skill)) {
-                                      if (selectedSKills!.length < 5) {
-                                        selectedSKills!.add(skill);
-                                        setState(() {});
-                                        print(selectedSKills);
+                                    print(selectedSKills);
+                                    if (!selectedSKills!
+                                        .contains(skill["name"])) {
+                                      if (selectedSKills!.length <
+                                          skills.length) {
+                                        selectedSKills!.add(skill["name"]);
+                                        selectedSkillsId!.add(skill["id"]);
+                                        setState(() {
+                                          print(selectedSKills);
+                                          print(selectedSkillsId);
+                                        });
                                       }
                                     } else {
-                                      selectedSKills!.removeWhere(
-                                          (element) => element == skill);
-                                      setState(() {});
-                                      print(selectedSKills);
+                                      selectedSKills!.removeWhere((element) =>
+                                          element == skill["name"]);
+                                      selectedSkillsId!.removeWhere(
+                                          (element) => element == skill["id"]);
+                                      setState(() {
+                                        print(selectedSkillsId);
+                                      });
                                     }
                                   },
                                   child: Container(
@@ -184,7 +189,7 @@ class _ClientPostProjectScreenState extends State<ClientPostProjectScreen> {
                                             width: 2),
                                       ),
                                       child: Text(
-                                        skill,
+                                        skill["name"],
                                         style: TextStyle(
                                             color: isSelected
                                                 ? KgreenColor
@@ -198,14 +203,22 @@ class _ClientPostProjectScreenState extends State<ClientPostProjectScreen> {
                             ).toList(),
                           ),
                           SizedBox(height: 20),
-Row(children: [                          Text("Expected duration",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-],),
+                          Row(
+                            children: [
+                              Text(
+                                "Expected duration",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                           SizedBox(height: 20),
                           Row(
                             children: [
                               Expanded(
                                 child: TextFormField(
                                   keyboardType: TextInputType.number,
+                                  controller: jobProvider.monthsController,
                                   decoration: InputDecoration(
                                     labelText: 'Months',
                                     border: OutlineInputBorder(),
@@ -227,6 +240,7 @@ Row(children: [                          Text("Expected duration",style: TextSty
                               Expanded(
                                 child: TextFormField(
                                   keyboardType: TextInputType.number,
+                                  controller: jobProvider.daysController,
                                   decoration: InputDecoration(
                                     labelText: 'Days',
                                     border: OutlineInputBorder(),
@@ -249,6 +263,7 @@ Row(children: [                          Text("Expected duration",style: TextSty
                           SizedBox(height: 20),
                           TextFormField(
                             keyboardType: TextInputType.number,
+                            controller: jobProvider.budgetController,
                             decoration: InputDecoration(
                               labelText: 'Budget',
                               border: OutlineInputBorder(),
@@ -273,71 +288,14 @@ Row(children: [                          Text("Expected duration",style: TextSty
                 ),
               ),
             ),
-            // SizedBox(
-            //   height: 20,
-            // ),
-            // Container(
-            //   height: 200,
-            //   width: double.infinity,
-            //   padding: EdgeInsets.all(20),
-            //   decoration: BoxDecoration(
-            //       color: Colors.white, borderRadius: BorderRadius.circular(20)),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       GestureDetector(
-            //         onTap: _pickImage,
-            //         child: Container(
-            //           width: 150,
-            //           height: 150,
-            //           decoration: BoxDecoration(
-            //             border: Border.all(),
-            //             borderRadius: BorderRadius.circular(20),
-            //           ),
-            //           child: Center(
-            //               child: Column(
-            //             mainAxisAlignment: MainAxisAlignment.center,
-            //             children: [
-            //               Icon(
-            //                 Icons.add_photo_alternate,
-            //                 size: 50,
-            //               ),
-            //               Text(
-            //                 'Add Image',
-            //                 style: TextStyle(
-            //                     color: Colors.black,
-            //                     fontWeight: FontWeight.bold,
-            //                     fontSize: 15),
-            //               ),
-            //             ],
-            //           )),
-            //         ),
-            //       ),
-            //       if (imageString != null)
-            //         Container(
-            //           width: 150,
-            //           height: 150,
-            //           decoration: BoxDecoration(
-            //             color: KgreyColor,
-            //             borderRadius: BorderRadius.circular(20),
-            //             image: DecorationImage(
-            //               image: FileImage(
-            //                 File(imageString!),
-            //               ),
-            //               fit: BoxFit.cover,
-            //             ),
-            //           ),
-            //         ),
-            //     ],
-            //   ),
-            // ),
             SizedBox(
               height: 20,
             ),
             InkWell(
-              onTap: () {
+              onTap: () async {
                 if (_formKey.currentState!.validate()) {
                   // Process the form data
+                  await jobProvider.postJob(context,categoryId: selectedCategoryId!, skillsListId: selectedSkillsId,token: userProvider.userToken);
                 }
               },
               child: Container(

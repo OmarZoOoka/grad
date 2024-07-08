@@ -29,7 +29,11 @@ class _ClientProfileState extends State<ClientProfile> {
         appBar: AppBar(
           leading: GestureDetector(
             onTap: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ClientHomeScreen(),));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ClientHomeScreen(),
+                  ));
             },
             child: Icon(
               Icons.arrow_back,
@@ -58,11 +62,13 @@ class _ClientProfileState extends State<ClientProfile> {
             ElevatedButton(
               style: ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(KgreenColor)),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ClientDashboard()));
+              onPressed: () async {
+                var userProvider =
+                    Provider.of<UserProvider>(context, listen: false);
+                await userProvider.fetchSkills();
+
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ClientDashboard()));
               },
               child: Text(
                 "Dashboard",
@@ -76,8 +82,6 @@ class _ClientProfileState extends State<ClientProfile> {
         body: Consumer<UserProvider>(builder: (context, userProvider, _) {
           final userData = userProvider.userData;
           if (userData == null) {
-            // If user data is null, fetch it
-            userProvider.getClientData();
             return Center(child: CircularProgressIndicator());
           } else {
             // Data has been fetched, proceed with building UI
@@ -131,33 +135,6 @@ class _ClientProfileState extends State<ClientProfile> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Ui/Ux Designer",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    size: 15,
-                                  ),
-                                  Text(
-                                    "4.9 (999 Reviews)",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
                               Container(
                                 height: 105,
                                 width: double.infinity,
@@ -176,13 +153,6 @@ class _ClientProfileState extends State<ClientProfile> {
                                       children: [
                                         Text(
                                           "Location",
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          "Rate",
                                           style: TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold,
@@ -211,13 +181,7 @@ class _ClientProfileState extends State<ClientProfile> {
                                           ),
                                         ),
                                         Text(
-                                          "90\$/hr",
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        Text(
-                                          "666",
+                                          "26",
                                           style: TextStyle(
                                             fontSize: 15,
                                           ),
@@ -269,42 +233,65 @@ class _ClientProfileState extends State<ClientProfile> {
                                 height: 20,
                               ),
                               Column(
-
                                 children: [
-                                  SizedBox(height: 15,),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text("Location: "),
-                                      Text("Tanta", style: TextStyle(fontWeight: FontWeight.bold),),
+                                      Text(
+                                        "Tanta",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ],
                                   ),
-                                  SizedBox(height: 15,),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text("Member since: "),
-                                      Text("March 02, 2024", style: TextStyle(fontWeight: FontWeight.bold),),
+                                      Text(
+                                        "March 02, 2024",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ],
                                   ),
-                                  SizedBox(height: 15,),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text("Gender: "),
-                                      Text("Male", style: TextStyle(fontWeight: FontWeight.bold),),
+                                      Text(
+                                        "Male",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ],
                                   ),
-                                  SizedBox(height: 15,),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text("Languages: "),
-                                      Text("English, Arabic", style: TextStyle(fontWeight: FontWeight.bold),),
+                                      Text(
+                                        "English, Arabic",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ],
                                   )
                                 ],

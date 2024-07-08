@@ -261,6 +261,7 @@ class _RegisterAsClientScreenState extends State<RegisterAsClientScreen> {
                               builder: (context) => ClientHomeScreen(),
                             ),
                           );
+                          await userProvider.showData();
                         }
                       },
                     ),
@@ -283,6 +284,7 @@ class _RegisterAsClientScreenState extends State<RegisterAsClientScreen> {
                                   builder: (context) => const RegisterScreen(),
                                 ),
                               );
+                              
                             },
                             child: const Text(
                               "Sign in Now",

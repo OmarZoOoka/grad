@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/Components/components.dart';
 import 'package:graduation_project/authentication/freelancer_signup_screen.dart';
 import 'package:graduation_project/constants.dart';
+import 'package:graduation_project/services/job_provider.dart';
 
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -157,9 +158,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       loginButton(
                         buttonText: 'Login',
-                        () {
+                        ()async {
                           if (_formKey.currentState!.validate()) {
-                            userProvider.login(context);
+                           await userProvider.login(context);
+                            await  userProvider.showData();
+                            await JobProvider().fetchJobs();
                           }
                         },
                       ),

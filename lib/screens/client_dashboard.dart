@@ -4,6 +4,7 @@ import 'package:graduation_project/screens/client_dashboard/client_dashboard_scr
 import 'package:graduation_project/screens/client_dashboard/client_my_order_screen.dart';
 import 'package:graduation_project/screens/client_dashboard/client_my_projects.dart';
 import 'package:graduation_project/screens/client_dashboard/client_post_job_screen.dart';
+import 'package:graduation_project/screens/client_dashboard/edit_client_profile.dart';
 import 'package:graduation_project/screens/client_dashboard/proposal_screen.dart';
 import 'package:graduation_project/screens/client_profile.dart';
 import 'package:graduation_project/services/user_provider.dart';
@@ -197,7 +198,7 @@ class _ClientDashboardState extends State<ClientDashboard> {
       case 'Proposal'  :
         return ProposalScreen();
       case 'Edit Profile':
-        return ProposalScreen();
+        return EditClientProfile();
       default:
         return ClientDashboardScreen();
     }
