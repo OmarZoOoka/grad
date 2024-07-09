@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:graduation_project/constants.dart';
+import 'package:graduation_project/screens/Drawer/contact_us_screen.dart';
+import 'package:graduation_project/screens/Drawer/feedback_screen.dart';
+import 'package:graduation_project/screens/Drawer/help_and_support_screen.dart';
+import 'package:graduation_project/screens/Drawer/privacy_policy_screen.dart';
+import 'package:graduation_project/screens/Drawer/settings_screen.dart';
 import 'package:graduation_project/screens/freelancer_profile.dart';
 import 'package:graduation_project/screens/freelancer_setup_screen.dart';
 import 'package:graduation_project/screens/project_information_screen.dart';
@@ -11,11 +16,8 @@ import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
- 
-
   const HomeScreen({
     Key? key,
-    
   }) : super(key: key);
 
   @override
@@ -34,6 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
     final setupStatus = Provider.of<SetupStatusModel>(context, listen: false);
+    var jobProvider = Provider.of<JobProvider>(context, listen: false);
+
     List<Map<String, dynamic>> categories = userProvider.categories;
     final allCategories = categories.map((category) {
       final imageUrl = category['imageUrl'].toString();
@@ -47,35 +51,14 @@ class _HomeScreenState extends State<HomeScreen> {
       'assets/images/4.png',
       'assets/images/5.png',
     ];
-    List<String> jobImages = [
-      "assets/images/job-1.png",
-      "assets/images/job-4.png",
-      "assets/images/job-5.png",
-      "assets/images/job-6.png",
-    ];
 
     List<String> images = [
       'assets/images/person-1.jpg',
       'assets/images/person-2.jpg',
       'assets/images/person-3.jpg'
     ];
-        var jobProvider = Provider.of<JobProvider>(context, listen: false);
+    final List<dynamic>? jobsData = jobProvider.jobsData;
 
-    List? jobsData = jobProvider.jobsData;
-    List<Map<String, String>> jobDetails = [
-      {'name': 'Project Manager', 'price': '20\$ - 40\$', 'client': 'Atia'},
-      {
-        'name': 'Mobile App DevelopMent',
-        'price': '10\$ - 20\$',
-        'client': 'Omar'
-      },
-      {
-        'name': 'Website Developer',
-        'price': '11\$ - 25\$',
-        'client': 'Abohend'
-      },
-      {'name': 'Ui Ux', 'price': '5\$ - 15\$', 'client': 'Shorbagy'},
-    ];
     return Scaffold(
       backgroundColor: KoffwhiteColor,
       appBar: AppBar(
@@ -661,7 +644,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         SizedBox(height: 20),
                         CarouselSlider(
-                          items: List.generate(jobImages.length, (index) {
+                          items: List.generate(jobsData?.length ?? 0, (index) {
+                            final job = jobsData![index];
                             return Builder(
                               builder: (BuildContext context) {
                                 return InkWell(
@@ -685,39 +669,123 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     child: Column(
                                       children: [
-                                        Container(
-                                          height: 120,
-                                          width: 120,
-                                          decoration: BoxDecoration(
-                                              color: kcyanColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(100)),
-                                          child: Image.asset(
-                                            jobImages[index],
-                                            scale: 5,
-                                          ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Project No.",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(
+                                              job['id']
+                                                  .toString(), // Replace with job specific client data
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        SizedBox(height: 30),
-                                        Text(
-                                          jobDetails[index]['client']!,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                        Divider(),
+                                        SizedBox(height: 15),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Title: ",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(
+                                              job['title'] ??
+                                                  '', // Replace with job specific client data
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         SizedBox(height: 15),
-                                        Text(
-                                          jobDetails[index]['price']!,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                          ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Duration:",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(
+                                              '${job['expectedDuration']['months']} months ${job['expectedDuration']['days']} days',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         SizedBox(height: 15),
-                                        Text(
-                                          jobDetails[index]['name']!,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Skills:",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Expanded(
+                                              child: ListView(
+                                                shrinkWrap: true,
+                                                children: job['skills']
+                                                    .map<Widget>((skill) {
+                                                  return Text(
+                                                    '- ${skill['name']}',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 15),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Expected Budget: ",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(
+                                              '\$${job['expectedBudget']}', // Replace with job specific price data
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         SizedBox(height: 30),
                                         Padding(
@@ -729,7 +797,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      ProjectInformation(),
+                                                      ProjectInformation(
+                                                          projectId: job['id']),
                                                 ),
                                               );
                                             },
@@ -750,10 +819,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   Text(
                                                     'Apply Now',
                                                     style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w500),
+                                                      color: Colors.white,
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
                                                   ),
                                                   Icon(
                                                     Icons.arrow_right_alt,
@@ -1700,7 +1770,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 20,
                       ),
                       Text(
-                        "FreelancerHub@gmail.com",
+                        "Sho8lana@gmail.com",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -1744,41 +1814,30 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.green,
+                color: kcyanColor,
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      if (setupStatus.isSetupCompleted) {
-                        // If setup is completed, navigate to profile screen
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FreelancerProfile()),
-                        );
-                      } else {
-                        // If setup is not completed, navigate to setup screen
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FreelancerSetupScreen()),
-                        );
-                      }
-                    },
-                    icon: Icon(Icons.person),
-                    style: ButtonStyle(alignment: Alignment.center),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6),
-                    child: Text(
-                      'Profile',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
+                  Row(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        child: Image(
+                          image: AssetImage("assets/images/logo.png"),
+                        ),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          'Sho8lana',
+                          style: TextStyle(
+                              color: KgreenColor,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -1789,24 +1848,169 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
-                    title: Text('Item 1'),
-                    onTap: () {},
+                    title: InkWell(
+                      onTap: () {
+                        if (setupStatus.isSetupCompleted) {
+                          // If setup is completed, navigate to profile screen
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FreelancerProfile()),
+                          );
+                        } else {
+                          // If setup is not completed, navigate to setup screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FreelancerSetupScreen()),
+                          );
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.person),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Profile',
+                            style: TextStyle(fontSize: 20, color: kcyanColor),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   ListTile(
-                    title: Text('Item 2'),
-                    onTap: () {},
+                    title: Row(
+                      children: [
+                        Icon(Icons.settings),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Settings',
+                          style: TextStyle(fontSize: 20, color: kcyanColor),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SettingsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.contact_mail),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Contact Us',
+                          style: TextStyle(fontSize: 20, color: kcyanColor),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ContactUsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.help),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Help & Support',
+                          style: TextStyle(fontSize: 20, color: kcyanColor),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SupportScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.feedback),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Feedback',
+                          style: TextStyle(fontSize: 20, color: kcyanColor),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FeedBackScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.privacy_tip),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Privacy & Policy',
+                          style: TextStyle(fontSize: 20, color: kcyanColor),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PrivacyPolicyScreen(),
+                        ),
+                      );
+                    },
                   ),
                   SizedBox(
-                    height: 450,
+                    height: 250,
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.logout,
-                      size: 40,
-                    ),
-                    onPressed: () async {
-                      await userProvider.logout();
-                    },
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.logout,
+                          size: 40,
+                        ),
+                        onPressed: () async {
+                          await userProvider.logout();
+                        },
+                      ),
+                      Text(
+                        "Logout",
+                        style: TextStyle(
+                          fontSize: 24,
+                        ),
+                      )
+                    ],
                   ),
                 ],
               ),

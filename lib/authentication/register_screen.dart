@@ -20,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     Provider.of<UserProvider>(context, listen: false).fetchCategories();
     var userProvider = Provider.of<UserProvider>(context, listen: false);
+    var jobProvider = Provider.of<JobProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: KoffwhiteColor,
@@ -31,7 +32,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               appName,
               style: TextStyle(fontWeight: FontWeight.bold, color: KgreenColor),
             ),
-            
           ],
         ),
         leading: Builder(
@@ -74,135 +74,125 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                    
-                      
-                    
                   ],
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                height: 500,
-                width: double.infinity,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Log in",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.white),
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              height: 500,
+              width: double.infinity,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Log in",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        "Welcome to FreelancerHub",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
+                    ),
+                    Text(
+                      "Welcome to Sho8lana",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
                       ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Input(
-                        con: userProvider.emailController,
-                        enter: TextInputType.emailAddress,
-                        lab: "Email",
-                        pre: const Icon(Icons.email),
-                        validate: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Email is required";
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Input(
-                        con: userProvider.passwordController,
-                        lab: "Password",
-                        pre: const Icon(Icons.lock),
-                        validate: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Password is required";
-                          }
-                          return null;
-                        },
-                        isObsecure:
-                            Provider.of<UserProvider>(context, listen: true)
-                                .secure,
-                        suf: Provider.of<UserProvider>(context, listen: true)
-                                .secure
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        suffunf: () {
-                          userProvider.setSecure();
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      loginButton(
-                        buttonText: 'Login',
-                        ()async {
-                          if (_formKey.currentState!.validate()) {
-                           await userProvider.login(context);
-                            await  userProvider.showData();
-                            await JobProvider().fetchJobs();
-                          }
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Don't have an account?",
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Input(
+                      con: userProvider.emailController,
+                      enter: TextInputType.emailAddress,
+                      lab: "Email",
+                      pre: const Icon(Icons.email),
+                      validate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Email is required";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Input(
+                      con: userProvider.passwordController,
+                      lab: "Password",
+                      pre: const Icon(Icons.lock),
+                      validate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Password is required";
+                        }
+                        return null;
+                      },
+                      isObsecure:
+                          Provider.of<UserProvider>(context, listen: true)
+                              .secure,
+                      suf: Provider.of<UserProvider>(context, listen: true)
+                              .secure
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      suffunf: () {
+                        userProvider.setSecure();
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    loginButton(
+                      buttonText: 'Login',
+                      () async {
+                        if (_formKey.currentState!.validate()) {
+                          await userProvider.login(context);
+                          await userProvider.showData();
+                          await jobProvider.fetchJobs();
+                        }
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Don't have an account?",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              userProvider.disposeAlldata();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const RegisterAsFreelancerScreen(),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              "Create one now",
                               style: TextStyle(
+                                color: KgreenColor,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 12,
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                userProvider.disposeAlldata();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RegisterAsFreelancerScreen(),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                "Create one now",
-                                style: TextStyle(
-                                  color: KgreenColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:graduation_project/Components/flush_bar.dart';
-import 'package:graduation_project/services/user_provider.dart';
 import 'package:http/http.dart' as http;
 
 class JobProvider with ChangeNotifier {
@@ -11,8 +10,8 @@ class JobProvider with ChangeNotifier {
   TextEditingController monthsController = TextEditingController();
   TextEditingController daysController = TextEditingController();
   TextEditingController budgetController = TextEditingController();
-  List? jobsData;
-  String ?token ;
+  List<dynamic>? jobsData;
+  String? token;
   Future<void> postJob(context,
       {required int categoryId,
       required List<int> skillsListId,
@@ -36,11 +35,8 @@ class JobProvider with ChangeNotifier {
           "expectedBudget": "${int.parse(budgetController.text)}"
         }),
       );
-      print(token);
-      print(response.statusCode);
+
       if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        final statusCode = responseData['statusCode'];
         Navigator.pop(context);
         showFlushBar('Job Posted Successfully', isError: false);
       }
@@ -53,12 +49,14 @@ class JobProvider with ChangeNotifier {
     try {
       final response = await http.get(
         Uri.parse('http://10.0.2.2:5140/api/Project'),
-        headers: <String, String>{'Authorization': 'Bearer ${token}'},
+        headers: <String, String>{
+          'Authorization': 'Bearer ${token}',
+        },
       );
-      print(response.body);
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         jobsData = responseData["result"];
+        print(response.statusCode);
         print(jobsData);
         notifyListeners();
       } else {
@@ -66,7 +64,7 @@ class JobProvider with ChangeNotifier {
         print(responseData['message']);
       }
     } catch (e) {
-      throw Exception('Error fetching skills: $e');
+      throw Exception('Error fetching jobs: $e');
     }
   }
 }

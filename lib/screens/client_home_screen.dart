@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:graduation_project/constants.dart';
+import 'package:graduation_project/screens/Drawer/contact_us_screen.dart';
+import 'package:graduation_project/screens/Drawer/feedback_screen.dart';
+import 'package:graduation_project/screens/Drawer/help_and_support_screen.dart';
+import 'package:graduation_project/screens/Drawer/privacy_policy_screen.dart';
+import 'package:graduation_project/screens/Drawer/settings_screen.dart';
 import 'package:graduation_project/screens/client_profile.dart';
 import 'package:graduation_project/screens/client_setup_screen.dart';
 import 'package:graduation_project/services/drawer_model.dart';
@@ -1689,43 +1694,30 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.green,
+                color: kcyanColor,
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
                 children: [
-                  IconButton(
-                    onPressed: () {
-
-                     
-                      if (setupStatus.isSetupCompleted) {
-                        // If setup is completed, navigate to profile screen
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ClientProfile()),
-                        );
-                      } else {
-                        // If setup is not completed, navigate to setup screen
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ClientSetupScreen()),
-                        );
-                      }
-                    },
-                    icon: Icon(Icons.person),
-                    style: ButtonStyle(alignment: Alignment.center),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6),
-                    child: Text(
-                      'Profile',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
+                  Row(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        child: Image(
+                          image: AssetImage("assets/images/logo.png"),
+                        ),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          'Sho8lana',
+                          style: TextStyle(
+                              color: KgreenColor,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -1736,24 +1728,169 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
-                    title: Text('Item 1'),
-                    onTap: () {},
+                    title: InkWell(
+                      onTap: () {
+                        if (setupStatus.isSetupCompleted) {
+                          // If setup is completed, navigate to profile screen
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ClientProfile()),
+                          );
+                        } else {
+                          // If setup is not completed, navigate to setup screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ClientSetupScreen()),
+                          );
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.person),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Profile',
+                            style: TextStyle(fontSize: 20, color: kcyanColor),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   ListTile(
-                    title: Text('Item 2'),
-                    onTap: () {},
+                    title: Row(
+                      children: [
+                        Icon(Icons.settings),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Settings',
+                          style: TextStyle(fontSize: 20, color: kcyanColor),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SettingsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.contact_mail),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Contact Us',
+                          style: TextStyle(fontSize: 20, color: kcyanColor),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ContactUsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.help),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Help & Support',
+                          style: TextStyle(fontSize: 20, color: kcyanColor),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SupportScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.feedback),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Feedback',
+                          style: TextStyle(fontSize: 20, color: kcyanColor),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FeedBackScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.privacy_tip),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Privacy & Policy',
+                          style: TextStyle(fontSize: 20, color: kcyanColor),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PrivacyPolicyScreen(),
+                        ),
+                      );
+                    },
                   ),
                   SizedBox(
-                    height: 450,
+                    height: 250,
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.logout,
-                      size: 40,
-                    ),
-                    onPressed: () async {
-                      await userProvider.logout();
-                    },
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.logout,
+                          size: 40,
+                        ),
+                        onPressed: () async {
+                          await userProvider.logout();
+                        },
+                      ),
+                      Text(
+                        "Logout",
+                        style: TextStyle(
+                          fontSize: 24,
+                        ),
+                      )
+                    ],
                   ),
                 ],
               ),

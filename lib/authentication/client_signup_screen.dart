@@ -131,175 +131,172 @@ class _RegisterAsClientScreenState extends State<RegisterAsClientScreen> {
           SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.white),
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              height: 700,
-              width: double.infinity,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Sign up",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10), color: Colors.white),
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            height: 700,
+            width: double.infinity,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Sign up",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text(
-                      "Create your Client account",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
+                  ),
+                  Text(
+                    "Create your Client account",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
                     ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Input(
-                      con: userProvider.nameController,
-                      lab: "Name",
-                      pre: Icon(Icons.person_outline),
-                      validate: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Name is required";
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Input(
-                      con: userProvider.emailController,
-                      enter: TextInputType.emailAddress,
-                      lab: "Email",
-                      pre: Icon(Icons.email),
-                      validate: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Email is required";
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Input(
-                      con: userProvider.passwordController,
-                      lab: "Password",
-                      pre: Icon(Icons.lock),
-                      isObsecure:
-                          Provider.of<UserProvider>(context, listen: true)
-                              .secure,
-                      suf: Provider.of<UserProvider>(context, listen: true)
-                              .secure
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      suffunf: () {
-                        userProvider.setSecure();
-                      },
-                      validate: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Password is required";
-                        }
-                        RegExp passwordPattern = RegExp(
-                          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$',
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Input(
+                    con: userProvider.nameController,
+                    lab: "Name",
+                    pre: Icon(Icons.person_outline),
+                    validate: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Name is required";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Input(
+                    con: userProvider.emailController,
+                    enter: TextInputType.emailAddress,
+                    lab: "Email",
+                    pre: Icon(Icons.email),
+                    validate: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Email is required";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Input(
+                    con: userProvider.passwordController,
+                    lab: "Password",
+                    pre: Icon(Icons.lock),
+                    isObsecure:
+                        Provider.of<UserProvider>(context, listen: true)
+                            .secure,
+                    suf: Provider.of<UserProvider>(context, listen: true)
+                            .secure
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    suffunf: () {
+                      userProvider.setSecure();
+                    },
+                    validate: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Password is required";
+                      }
+                      RegExp passwordPattern = RegExp(
+                        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$',
+                      );
+                      if (!passwordPattern.hasMatch(value)) {
+                        return "Password must contain at least one lowercase letter\n one uppercase letter\n one digit\n one special character\n and be at least 6 characters long.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Input(
+                    con: userProvider.confirmPasswordController,
+                    lab: "Repeat Password",
+                    pre: Icon(Icons.lock),
+                    validate: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Password is required";
+                      } else if (value !=
+                          userProvider.passwordController.text) {
+                        return "Password does not match";
+                      }
+                      return null;
+                    },
+                    isObsecure:
+                        Provider.of<UserProvider>(context, listen: true)
+                            .secure2,
+                    suf: Provider.of<UserProvider>(context, listen: true)
+                            .secure2
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    suffunf: () {
+                      userProvider.setSecure2();
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  loginButton(
+                    buttonText: "Register",
+                    () async {
+                      if (_formKey.currentState!.validate()) {
+                        FocusScope.of(context).unfocus();
+                        await userProvider.signupAsClient();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ClientHomeScreen(),
+                          ),
                         );
-                        if (!passwordPattern.hasMatch(value)) {
-                          return "Password must contain at least one lowercase letter\n one uppercase letter\n one digit\n one special character\n and be at least 6 characters long.";
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Input(
-                      con: userProvider.confirmPasswordController,
-                      lab: "Repeat Password",
-                      pre: Icon(Icons.lock),
-                      validate: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Password is required";
-                        } else if (value !=
-                            userProvider.passwordController.text) {
-                          return "Password does not match";
-                        }
-                        return null;
-                      },
-                      isObsecure:
-                          Provider.of<UserProvider>(context, listen: true)
-                              .secure2,
-                      suf: Provider.of<UserProvider>(context, listen: true)
-                              .secure2
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      suffunf: () {
-                        userProvider.setSecure2();
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    loginButton(
-                      buttonText: "Register",
-                      () async {
-                        if (_formKey.currentState!.validate()) {
-                          FocusScope.of(context).unfocus();
-                          await userProvider.signupAsClient();
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ClientHomeScreen(),
-                            ),
-                          );
-                          await userProvider.showData();
-                        }
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Existing User?",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              userProvider.disposeAlldata();
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const RegisterScreen(),
-                                ),
-                              );
-                              
-                            },
-                            child: const Text(
-                              "Sign in Now",
-                              style: TextStyle(
-                                color: KgreenColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                        await userProvider.showData();
+                      }
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Existing User?",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            userProvider.disposeAlldata();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RegisterScreen(),
                               ),
+                            );
+                            
+                          },
+                          child: const Text(
+                            "Sign in Now",
+                            style: TextStyle(
+                              color: KgreenColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

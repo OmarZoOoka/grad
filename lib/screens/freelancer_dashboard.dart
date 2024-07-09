@@ -69,28 +69,25 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
               decoration: BoxDecoration(
                 color: kcyanColor,
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
                 children: [
-                  Image(
-                    image: AssetImage(
-                      "assets/images/logo.png",
-                    ),
-                    height: 80,
-                    width: 80,
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                  Row(
                     children: [
-                      Text(
-                        appName,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: KgreenColor,
-                          fontSize: 30,
+                      Container(
+                        height: 100,
+                        width: 100,
+                        child: Image(
+                          image: AssetImage("assets/images/logo.png"),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          'Sho8lana',
+                          style: TextStyle(
+                              color: KgreenColor,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -154,19 +151,24 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
             Padding(
               padding: const EdgeInsets.only(left: 30),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.logout,
-                      size: 60,
-                    ),
-                    onPressed: () async {
-                      await userProvider.logout();
-                    },
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.logout,
+                    size: 40,
                   ),
-                ],
-              ),
+                  onPressed: () async {
+                    await userProvider.logout();
+                  },
+                ),
+                Text(
+                  "Logout",
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                )
+              ],
+            ),
             ),
           ],
         ),

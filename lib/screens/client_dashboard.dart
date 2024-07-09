@@ -33,7 +33,11 @@ class _ClientDashboardState extends State<ClientDashboard> {
         centerTitle: true,
         leading: GestureDetector(
           onTap: () {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ClientProfile(),));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ClientProfile(),
+                ));
           },
           child: Icon(
             Icons.arrow_back,
@@ -69,28 +73,25 @@ class _ClientDashboardState extends State<ClientDashboard> {
               decoration: BoxDecoration(
                 color: kcyanColor,
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
                 children: [
-                  Image(
-                    image: AssetImage(
-                      "assets/images/logo.png",
-                    ),
-                    height: 80,
-                    width: 80,
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                  Row(
                     children: [
-                      Text(
-                        appName,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: KgreenColor,
-                          fontSize: 30,
+                      Container(
+                        height: 100,
+                        width: 100,
+                        child: Image(
+                          image: AssetImage("assets/images/logo.png"),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          'Sho8lana',
+                          style: TextStyle(
+                              color: KgreenColor,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
@@ -101,58 +102,72 @@ class _ClientDashboardState extends State<ClientDashboard> {
             buildDrawerItem(
               'Dashboard',
               Icons.dashboard,
-                  () {
+              () {
                 setState(() {
                   selectedContainer = 'Dashboard';
                 });
                 Navigator.pop(context);
               },
-            ),SizedBox(height: 20,),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             buildDrawerItem(
               'Create a Project',
               Icons.post_add,
-                  () {
+              () {
                 setState(() {
                   selectedContainer = 'Create a Project';
                 });
                 Navigator.pop(context);
               },
-            ),SizedBox(height: 20,),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             buildDrawerItem(
               'My Orders',
               Icons.mark_email_read_outlined,
-                  () {
+              () {
                 setState(() {
                   selectedContainer = 'My Orders';
                 });
                 Navigator.pop(context);
               },
-            ),SizedBox(height: 20,),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             buildDrawerItem(
               'Projects',
               Icons.document_scanner,
-                  () {
+              () {
                 setState(() {
                   selectedContainer = 'Projects';
                 });
                 Navigator.pop(context);
               },
-            ),SizedBox(height: 20,),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             buildDrawerItem(
               'Proposal',
               Icons.mark_email_read_outlined,
-                  () {
+              () {
                 setState(() {
                   selectedContainer = 'Proposal';
                 });
                 Navigator.pop(context);
               },
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             buildDrawerItem(
               'Edit Profile',
               Icons.mark_email_read_outlined,
-                  () {
+              () {
                 setState(() {
                   selectedContainer = 'Edit Profile';
                 });
@@ -160,24 +175,26 @@ class _ClientDashboardState extends State<ClientDashboard> {
               },
             ),
             SizedBox(
-              height: 350,
+              height: 140,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.logout,
-                      size: 60,
-                    ),
-                    onPressed: () async {
-                      await userProvider.logout();
-                    },
+            Row(
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.logout,
+                    size: 40,
                   ),
-                ],
-              ),
+                  onPressed: () async {
+                    await userProvider.logout();
+                  },
+                ),
+                Text(
+                  "Logout",
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                )
+              ],
             ),
           ],
         ),
@@ -195,7 +212,7 @@ class _ClientDashboardState extends State<ClientDashboard> {
         return ClientMyOrderScreen();
       case 'Projects':
         return ClientProjectScreen();
-      case 'Proposal'  :
+      case 'Proposal':
         return ProposalScreen();
       case 'Edit Profile':
         return EditClientProfile();

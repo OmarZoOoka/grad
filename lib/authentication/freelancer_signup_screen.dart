@@ -141,188 +141,185 @@ class _RegisterAsFreelancerScreenState
             SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                height: 850,
-                width: double.infinity,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 30,
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white),
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              height: 850,
+              width: double.infinity,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      "Sign up",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        "Sign up",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                    Text(
+                      "Create your Freelancer account",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
                       ),
-                      Text(
-                        "Create your FreelancerHub account",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Input(
+                      con: userProvider.nameController,
+                      lab: "Name",
+                      pre: Icon(Icons.person_outline),
+                      validate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Name is required";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Input(
+                      con: userProvider.emailController,
+                      enter: TextInputType.emailAddress,
+                      lab: "Email",
+                      pre: Icon(Icons.email),
+                      validate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Email is required";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Input(
+                      con: userProvider.passwordController,
+                      lab: "Password",
+                      pre: Icon(Icons.lock),
+                      isObsecure: userProvider.secure,
+                      suf: userProvider.secure
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      suffunf: () {
+                        userProvider.setSecure();
+                      },
+                      validate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Password is required";
+                        }
+                        RegExp passwordPattern = RegExp(
+                          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$',
+                        );
+                        if (!passwordPattern.hasMatch(value)) {
+                          return "Password must contain at least one lowercase letter\n one uppercase letter\n one digit\n one special character\n and be at least 6 characters long.";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Input(
+                      con: userProvider.confirmPasswordController,
+                      lab: "Repeat Password",
+                      pre: Icon(Icons.lock),
+                      validate: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Password is required";
+                        } else if (value !=
+                            userProvider.passwordController.text) {
+                          return "Password does not match";
+                        }
+                        return null;
+                      },
+                      isObsecure: userProvider.secure2,
+                      suf: userProvider.secure2
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      suffunf: () {
+                        userProvider.setSecure2();
+                      },
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    DropdownButtonFormField<int>(
+                      items: _items,
+                      value: selectedCategoryId,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedCategoryId = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Select Category',
+                        border: OutlineInputBorder(),
                       ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Input(
-                        con: userProvider.nameController,
-                        lab: "Name",
-                        pre: Icon(Icons.person_outline),
-                        validate: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Name is required";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Input(
-                        con: userProvider.emailController,
-                        enter: TextInputType.emailAddress,
-                        lab: "Email",
-                        pre: Icon(Icons.email),
-                        validate: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Email is required";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Input(
-                        con: userProvider.passwordController,
-                        lab: "Password",
-                        pre: Icon(Icons.lock),
-                        isObsecure: userProvider.secure,
-                        suf: userProvider.secure
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        suffunf: () {
-                          userProvider.setSecure();
-                        },
-                        validate: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Password is required";
-                          }
-                          RegExp passwordPattern = RegExp(
-                            r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$',
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    loginButton(
+                      buttonText: "Register",
+                      () async {
+                        if (_formKey.currentState!.validate()) {
+                          FocusScope.of(context).unfocus();
+                          await userProvider
+                              .signupAsFreelancer(selectedCategoryId!);
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => RegisterScreen()),
                           );
-                          if (!passwordPattern.hasMatch(value)) {
-                            return "Password must contain at least one lowercase letter\n one uppercase letter\n one digit\n one special character\n and be at least 6 characters long.";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Input(
-                        con: userProvider.confirmPasswordController,
-                        lab: "Repeat Password",
-                        pre: Icon(Icons.lock),
-                        validate: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Password is required";
-                          } else if (value !=
-                              userProvider.passwordController.text) {
-                            return "Password does not match";
-                          }
-                          return null;
-                        },
-                        isObsecure: userProvider.secure2,
-                        suf: userProvider.secure2
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        suffunf: () {
-                          userProvider.setSecure2();
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      DropdownButtonFormField<int>(
-                        items: _items,
-                        value: selectedCategoryId,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedCategoryId = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Select Category',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      loginButton(
-                        buttonText: "Register",
-                        () async {
-                          if (_formKey.currentState!.validate()) {
-                            FocusScope.of(context).unfocus();
-                            await userProvider
-                                .signupAsFreelancer(selectedCategoryId!);
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) => RegisterScreen()),
-                            );
-                             
-                          }
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Existing User?",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 12),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                userProvider.disposeAlldata();
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RegisterScreen(),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                "Sign in Now",
-                                style: TextStyle(
-                                  color: KgreenColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                           
+                        }
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Existing User?",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              userProvider.disposeAlldata();
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const RegisterScreen(),
                                 ),
+                              );
+                            },
+                            child: const Text(
+                              "Sign in Now",
+                              style: TextStyle(
+                                color: KgreenColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

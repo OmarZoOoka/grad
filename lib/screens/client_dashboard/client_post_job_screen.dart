@@ -157,7 +157,7 @@ class _ClientPostProjectScreenState extends State<ClientPostProjectScreen> {
                                       if (selectedSKills!.length <
                                           skills.length) {
                                         selectedSKills!.add(skill["name"]);
-                                        selectedSkillsId!.add(skill["id"]);
+                                        selectedSkillsId.add(skill["id"]);
                                         setState(() {
                                           print(selectedSKills);
                                           print(selectedSkillsId);
@@ -166,7 +166,7 @@ class _ClientPostProjectScreenState extends State<ClientPostProjectScreen> {
                                     } else {
                                       selectedSKills!.removeWhere((element) =>
                                           element == skill["name"]);
-                                      selectedSkillsId!.removeWhere(
+                                      selectedSkillsId.removeWhere(
                                           (element) => element == skill["id"]);
                                       setState(() {
                                         print(selectedSkillsId);
