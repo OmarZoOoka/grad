@@ -56,8 +56,7 @@ class JobProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         jobsData = responseData["result"];
-        print(response.statusCode);
-        print(jobsData);
+
         notifyListeners();
       } else {
         final responseData = jsonDecode(response.body);

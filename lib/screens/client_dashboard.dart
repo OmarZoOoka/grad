@@ -7,6 +7,7 @@ import 'package:graduation_project/screens/client_dashboard/client_post_job_scre
 import 'package:graduation_project/screens/client_dashboard/edit_client_profile.dart';
 import 'package:graduation_project/screens/client_dashboard/proposal_screen.dart';
 import 'package:graduation_project/screens/client_profile.dart';
+import 'package:graduation_project/services/project_proposal_provider.dart';
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class _ClientDashboardState extends State<ClientDashboard> {
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
+    var projectProposal = Provider.of<ProjectProposal>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -154,7 +156,8 @@ class _ClientDashboardState extends State<ClientDashboard> {
             buildDrawerItem(
               'Proposal',
               Icons.mark_email_read_outlined,
-              () {
+              () async {
+                await projectProposal.projectgetproposal;
                 setState(() {
                   selectedContainer = 'Proposal';
                 });

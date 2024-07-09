@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 class ProjectInformation extends StatelessWidget {
   final int projectId;
 
-  const ProjectInformation({Key? key, required this.projectId}) : super(key: key);
+  const ProjectInformation({Key? key, required this.projectId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,8 @@ class ProjectInformation extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text(
                   "Project Information",
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -62,13 +64,34 @@ class ProjectInformation extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    children: [
+                      Text(
+                        "Project No. ",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        job?['id'].toString() ?? '',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
                   _buildRow("Project Title:", job?['title'] ?? ''),
                   SizedBox(height: 10),
-                  _buildDescriptionRow("Description:", job?['description'] ?? ''),
+                  _buildDescriptionRow(
+                      "Description:", job?['description'] ?? ''),
                   SizedBox(height: 10),
                   _buildRow("Start Date:", job?['startDate'] ?? ''),
                   SizedBox(height: 10),
-                  _buildRow("Expected Budget:", "\$${job?['expectedBudget'] ?? ''}"),
+                  _buildRow(
+                      "Expected Budget:", "\$${job?['expectedBudget'] ?? ''}"),
                   SizedBox(height: 10),
                   _buildRow("Duration:",
                       "${job?['expectedDuration']['months']} months ${job?['expectedDuration']['days']} days"),
@@ -91,7 +114,8 @@ class ProjectInformation extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text(
                   "Client Information",
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -133,7 +157,9 @@ class ProjectInformation extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MakingProposal(),
+                      builder: (context) => MakingProposal(projectId: projectId,
+
+                      ),
                     ),
                   );
                 },

@@ -5,8 +5,10 @@ import 'package:graduation_project/Components/flush_bar.dart';
 import 'package:graduation_project/authentication/register_screen.dart';
 import 'package:graduation_project/screens/client_home_screen.dart';
 import 'package:graduation_project/screens/freelancer_home_screen.dart';
+import 'package:graduation_project/services/job_proposal_provider.dart';
 import 'package:graduation_project/services/job_provider.dart';
 import 'package:graduation_project/services/navigation_service.dart';
+import 'package:graduation_project/services/project_proposal_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -77,24 +79,25 @@ class UserProvider with ChangeNotifier {
 
         if (statusCode == 202) {
           await EasyLoading.dismiss();
-           role = responseData['result']['role'];
+          role = responseData['result']['role'];
           final id = responseData['result']['Id'];
           final token = responseData['result']['token'];
-JobProvider().token=token;
+          JobProvider().token = token;
+          JobProposal().token = token;
+          ProjectProposal().token = token;
           Provider.of<UserProvider>(context, listen: false).setUserId(id);
           Provider.of<UserProvider>(context, listen: false).setUserToken(token);
 
           if (role == 'Freelancer') {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (BuildContext context) => HomeScreen(
-                ),
+                builder: (BuildContext context) => HomeScreen(),
               ),
             );
           } else if (role == 'Client') {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (BuildContext context) =>  ClientHomeScreen(),
+                builder: (BuildContext context) => ClientHomeScreen(),
               ),
             );
           }
@@ -172,14 +175,13 @@ JobProvider().token=token;
         if (role == 'Freelancer') {
           Navigator.of(NavigationService.context!).pushReplacement(
             MaterialPageRoute(
-              builder: (BuildContext context) => HomeScreen(
-              ),
+              builder: (BuildContext context) => HomeScreen(),
             ),
           );
         } else if (role == 'Client') {
           Navigator.of(NavigationService.context!).pushReplacement(
             MaterialPageRoute(
-              builder: (BuildContext context) =>  ClientHomeScreen(),
+              builder: (BuildContext context) => ClientHomeScreen(),
             ),
           );
         }
@@ -188,13 +190,14 @@ JobProvider().token=token;
       } else {
         EasyLoading.dismiss();
         final responseData = jsonDecode(response.body);
-        print(responseData['message'] );
+        print(responseData['message']);
       }
     } catch (e) {
       EasyLoading.dismiss();
       print('Something went wrong: $e');
     }
   }
+
 //fetchCategories done
   Future<void> fetchCategories() async {
     try {
@@ -220,7 +223,7 @@ JobProvider().token=token;
     }
   }
 
-//fetchSkills 
+//fetchSkills done
   Future<void> fetchSkills() async {
     try {
       final response = await http.get(
@@ -235,7 +238,7 @@ JobProvider().token=token;
               'id': e['id'],
               'name': e['name'],
             }));
-            print("skills are ${skillData}");
+        print("skills are ${skillData}");
         notifyListeners();
       } else {
         final responseData = jsonDecode(response.body);
@@ -245,13 +248,13 @@ JobProvider().token=token;
       throw Exception('Error fetching skills: $e');
     }
   }
-
+//not done
   Future<void> changeUserDataForUser(
     String name,
     String imageUrl,
-    String phoneNumber,
-    {List<int>? skills,}
-  ) async {
+    String phoneNumber, {
+    List<int>? skills,
+  }) async {
     try {
       final userId = this.userId;
       final userToken = this.userToken;
@@ -262,8 +265,6 @@ JobProvider().token=token;
         formData.fields.addAll({
           'name': name,
           'phoneNumber': phoneNumber,
-
-
         });
 
         if (imageUrl.isNotEmpty) {
@@ -310,6 +311,8 @@ JobProvider().token=token;
       if (response.statusCode == 200) {
         debugPrint("data is ${response.body}");
         userData = jsonDecode(response.body);
+        ProjectProposal().projectid = userData!['result']['projectsId'];
+
         notifyListeners();
       } else {
         print(response.statusCode);
@@ -319,7 +322,7 @@ JobProvider().token=token;
       throw Exception('Error: $e');
     }
   }
- 
+
   logout() async {
     Navigator.pushAndRemoveUntil(
       NavigationService.context!,
@@ -330,8 +333,4 @@ JobProvider().token=token;
       showFlushBar("Logged Out Successfully", isError: false);
     });
   }
-  
 }
-
-
-

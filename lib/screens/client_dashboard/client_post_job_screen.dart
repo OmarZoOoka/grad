@@ -295,7 +295,10 @@ class _ClientPostProjectScreenState extends State<ClientPostProjectScreen> {
               onTap: () async {
                 if (_formKey.currentState!.validate()) {
                   // Process the form data
-                  await jobProvider.postJob(context,categoryId: selectedCategoryId!, skillsListId: selectedSkillsId,token: userProvider.userToken);
+                  await jobProvider.postJob(context,
+                      categoryId: selectedCategoryId!,
+                      skillsListId: selectedSkillsId,
+                      token: userProvider.userToken);
                 }
               },
               child: Container(
