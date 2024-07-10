@@ -36,10 +36,11 @@ class _ClientDashboardState extends State<ClientDashboard> {
         leading: GestureDetector(
           onTap: () {
             Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ClientProfile(),
-                ));
+              context,
+              MaterialPageRoute(
+                builder: (context) => ClientProfile(),
+              ),
+            );
           },
           child: Icon(
             Icons.arrow_back,
@@ -91,9 +92,10 @@ class _ClientDashboardState extends State<ClientDashboard> {
                         child: Text(
                           'Sho8lana',
                           style: TextStyle(
-                              color: KgreenColor,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold),
+                            color: KgreenColor,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
@@ -157,7 +159,9 @@ class _ClientDashboardState extends State<ClientDashboard> {
               'Proposal',
               Icons.mark_email_read_outlined,
               () async {
-                await projectProposal.projectgetproposal;
+                await projectProposal
+                    .projectgetproposal(); 
+                print("the proposal data is ${projectProposal.proposalData}");
                 setState(() {
                   selectedContainer = 'Proposal';
                 });

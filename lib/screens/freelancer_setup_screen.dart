@@ -17,7 +17,7 @@ class FreelancerSetupScreen extends StatefulWidget {
 class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
   int currentStep = 0;
   TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController name = TextEditingController();
+  TextEditingController nameController = TextEditingController();
 
   String? imageString;
 
@@ -59,9 +59,8 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
       ),
       body: Theme(
         data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-          primary: kcyanColor,
-        )),
+          colorScheme: ColorScheme.light(primary: kcyanColor),
+        ),
         child: Stepper(
           type: StepperType.vertical,
           steps: getSteps(),
@@ -70,7 +69,7 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
             final isFinalStep = currentStep == getSteps().length - 1;
             if (isFinalStep) {
               updateProfile();
-              print("stepper complete");
+              print("Stepper complete");
             } else {
               setState(() {
                 currentStep += 1;
@@ -79,7 +78,7 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
           },
           onStepCancel: () {
             if (currentStep == 0) {
-              return null;
+              return;
             } else {
               setState(() {
                 currentStep -= 1;
@@ -96,14 +95,12 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
       Step(
         state: currentStep > 0 ? StepState.complete : StepState.indexed,
         isActive: currentStep >= 0,
-        title: Text(
-          'Add Image',
-        ),
+        title: Text('Add Image'),
         content: Column(
           children: [
             ElevatedButton(
               style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(KgreenColor)),
+                  backgroundColor: MaterialStateProperty.all(KgreenColor)),
               onPressed: pickImage,
               child: Text(
                 'Add Image',
@@ -135,11 +132,11 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
       Step(
         state: currentStep > 2 ? StepState.complete : StepState.indexed,
         isActive: currentStep >= 2,
-        title: Text('Add your name'),
+        title: Text('Add Your Name'),
         content: Column(
           children: [
             TextField(
-              controller: name,
+              controller: nameController,
               decoration: InputDecoration(
                 labelText: 'Name',
               ),
@@ -156,36 +153,32 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
               bool isSelected = selectedSkills.contains(skill);
               return GestureDetector(
                 onTap: () {
-                  if (!isSelected) {
-                    if (selectedSkills.length < skills.length) {
-                      setState(() {
-                        selectedSkills.add(skill);
-                        selectedSkillIds.add(skill['id']);
-                      });
-                    }
-                  } else {
-                    setState(() {
+                  setState(() {
+                    if (isSelected) {
                       selectedSkills.remove(skill);
                       selectedSkillIds.remove(skill['id']);
-                    });
-                  }
+                    } else {
+                      selectedSkills.add(skill);
+                      selectedSkillIds.add(skill['id']);
+                    }
+                  });
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 5, vertical: 4),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(
-                          color: isSelected ? KgreenColor : Colors.grey,
-                          width: 2),
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                      color: isSelected ? KgreenColor : Colors.grey,
+                      width: 2,
                     ),
-                    child: Text(
-                      skill['name'],
-                      style: TextStyle(
-                          color: isSelected ? KgreenColor : Colors.grey,
-                          fontSize: 14),
+                  ),
+                  child: Text(
+                    skill['name'],
+                    style: TextStyle(
+                      color: isSelected ? KgreenColor : Colors.grey,
+                      fontSize: 14,
                     ),
                   ),
                 ),
@@ -201,9 +194,9 @@ class _FreelancerSetupScreenState extends State<FreelancerSetupScreen> {
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
 
-    userProvider.changeUserDataForUser(
-      name.text,
-      imageString.toString(),
+    userProvider.changeUserDataForFreelancer(
+      nameController.text,
+      imageString ?? '',
       phoneNumberController.text,
       skills: selectedSkillIds,
     );

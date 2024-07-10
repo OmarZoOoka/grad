@@ -6,9 +6,9 @@ import 'package:http/http.dart' as http;
 class ProjectProposal with ChangeNotifier {
   String? token;
   List<dynamic>? proposalData;
-  List? projectid;
+  List? projectsid;
   Future<void> projectgetproposal() async {
-    print("list of idProject is $projectid");
+    print("token is $token");
     try {
       final response = await http.get(
         Uri.parse('http://10.0.2.2:5140/api/ProjectProposal/1'),
@@ -19,7 +19,6 @@ class ProjectProposal with ChangeNotifier {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         proposalData = responseData["result"];
-        print(responseData);
         notifyListeners();
       } else {
         final responseData = jsonDecode(response.body);

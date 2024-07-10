@@ -5,24 +5,42 @@ class ProposalRows extends StatelessWidget {
   final String text2;
 
   const ProposalRows({
-    super.key,
+    Key? key,
     required this.text1,
     required this.text2,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          text1,
-          style: TextStyle(
-            color: Colors.grey[600],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            flex: 2,
+            child: Text(
+              text1,
+              style: TextStyle(
+                color: Colors.grey[600],
+              ),
+            ),
           ),
-        ),
-        Text(text2,style: TextStyle(fontWeight: FontWeight.w500),),
-      ],
+          SizedBox(width: 16),
+          Expanded(
+            flex: 5,
+            child: Text(
+              text2,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

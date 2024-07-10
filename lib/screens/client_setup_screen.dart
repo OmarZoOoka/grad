@@ -17,7 +17,7 @@ class ClientSetupScreen extends StatefulWidget {
 class _ClientSetupScreenState extends State<ClientSetupScreen> {
   int currentStep = 0;
   TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController name = TextEditingController();
+  TextEditingController nameController = TextEditingController();
 
   String? imageString;
 
@@ -38,19 +38,16 @@ class _ClientSetupScreenState extends State<ClientSetupScreen> {
     super.initState();
   }
 
-  //
-
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Client Setup'),
+        title: Text('Clinet Setup'),
       ),
       body: Theme(
         data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-          primary: kcyanColor,
-        )),
+          colorScheme: ColorScheme.light(primary: kcyanColor),
+        ),
         child: Stepper(
           type: StepperType.vertical,
           steps: getSteps(),
@@ -59,7 +56,7 @@ class _ClientSetupScreenState extends State<ClientSetupScreen> {
             final isFinalStep = currentStep == getSteps().length - 1;
             if (isFinalStep) {
               updateProfile();
-              print("stepper complete");
+              print("Stepper complete");
             } else {
               setState(() {
                 currentStep += 1;
@@ -68,7 +65,7 @@ class _ClientSetupScreenState extends State<ClientSetupScreen> {
           },
           onStepCancel: () {
             if (currentStep == 0) {
-              return null;
+              return;
             } else {
               setState(() {
                 currentStep -= 1;
@@ -85,14 +82,12 @@ class _ClientSetupScreenState extends State<ClientSetupScreen> {
       Step(
         state: currentStep > 0 ? StepState.complete : StepState.indexed,
         isActive: currentStep >= 0,
-        title: Text(
-          'Add Image',
-        ),
+        title: Text('Add Image'),
         content: Column(
           children: [
             ElevatedButton(
               style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(KgreenColor)),
+                  backgroundColor: MaterialStateProperty.all(KgreenColor)),
               onPressed: pickImage,
               child: Text(
                 'Add Image',
@@ -124,11 +119,11 @@ class _ClientSetupScreenState extends State<ClientSetupScreen> {
       Step(
         state: currentStep > 2 ? StepState.complete : StepState.indexed,
         isActive: currentStep >= 2,
-        title: Text('Add your name'),
+        title: Text('Add Your Name'),
         content: Column(
           children: [
             TextField(
-              controller: name,
+              controller: nameController,
               decoration: InputDecoration(
                 labelText: 'Name',
               ),
@@ -136,16 +131,18 @@ class _ClientSetupScreenState extends State<ClientSetupScreen> {
           ],
         ),
       ),
+    
     ];
   }
 
+  
   void updateProfile() {
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
 
-    userProvider.changeUserDataForUser(
-      name.text,
-      imageString.toString(),
+    userProvider.changeUserDataForClient(
+      nameController.text,
+      imageString ?? '',
       phoneNumberController.text,
     );
     Navigator.pushReplacement(

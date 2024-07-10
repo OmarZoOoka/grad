@@ -123,7 +123,9 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50)),
                             child: imageUrl.length != 0
-                                ? Image.network(imageUrl)
+                                ? CircleAvatar(
+                                    child: Image.network(imageUrl),
+                                  )
                                 : CircleAvatar(),
                           ),
                         ),
@@ -429,7 +431,7 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
                                           width: 10,
                                         ),
                                         Text(
-                                          "Random Person",
+                                          "Person",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16),
@@ -485,18 +487,11 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  'Freelancer',
+                                  'Sho8lana',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: KgreenColor,
                                       fontSize: 35),
-                                ),
-                                Text(
-                                  'Hub',
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
                                 ),
                               ],
                             ),
@@ -649,7 +644,7 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
                               width: 20,
                             ),
                             Text(
-                              "FreelancerHub@gmail.com",
+                              "Sho8lana@gmail.com",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,

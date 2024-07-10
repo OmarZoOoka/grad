@@ -60,7 +60,6 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<void> login(BuildContext context) async {
-    EasyLoading.show(status: 'loading...');
     try {
       final response = await http.post(
         Uri.parse('http://10.0.2.2:5140/api/Account/login'),
@@ -78,15 +77,15 @@ class UserProvider with ChangeNotifier {
         final statusCode = responseData['statusCode'];
 
         if (statusCode == 202) {
-          await EasyLoading.dismiss();
           role = responseData['result']['role'];
           final id = responseData['result']['Id'];
           final token = responseData['result']['token'];
-          JobProvider().token = token;
-          JobProposal().token = token;
-          ProjectProposal().token = token;
+
           Provider.of<UserProvider>(context, listen: false).setUserId(id);
           Provider.of<UserProvider>(context, listen: false).setUserToken(token);
+          Provider.of<JobProvider>(context, listen: false).token = token;
+          Provider.of<JobProposal>(context, listen: false).token = token;
+          Provider.of<ProjectProposal>(context, listen: false).token = token;
 
           if (role == 'Freelancer') {
             Navigator.of(context).pushReplacement(
@@ -248,11 +247,14 @@ class UserProvider with ChangeNotifier {
       throw Exception('Error fetching skills: $e');
     }
   }
+
 //not done
-  Future<void> changeUserDataForUser(
+  Future<void> changeUserDataForFreelancer(
     String name,
     String imageUrl,
     String phoneNumber, {
+    int? experienceYears,
+    int? categoryId,
     List<int>? skills,
   }) async {
     try {
@@ -260,6 +262,57 @@ class UserProvider with ChangeNotifier {
       final userToken = this.userToken;
       if (userId != null) {
         final endpoint = 'http://10.0.2.2:5140/api/Freelancer/$userId';
+
+        var formData = http.MultipartRequest('PUT', Uri.parse(endpoint));
+        formData.fields.addAll({
+          'name': name,
+          'phoneNumber': phoneNumber,
+          if (experienceYears != null)
+            'experienceYears': experienceYears.toString(),
+          if (categoryId != null) 'categoryId': categoryId.toString(),
+        });
+
+        if (skills != null && skills.isNotEmpty) {
+          formData.fields['skills'] = skills.join(',');
+        }
+
+        if (imageUrl.isNotEmpty) {
+          formData.files.add(
+            await http.MultipartFile.fromPath('image', imageUrl),
+          );
+        }
+
+        formData.headers.addAll({
+          'Authorization': 'Bearer $userToken',
+        });
+
+        final response = await http.Response.fromStream(await formData.send());
+
+        if (response.statusCode == 200) {
+          showFlushBar('Data Updated Successfully', isError: false);
+          print(response.body);
+        } else {
+          print("Error updating user data: ${response.statusCode}");
+          print("Response body: ${response.body}");
+        }
+      } else {
+        print("User ID is null");
+      }
+    } catch (e) {
+      print("Error : $e");
+    }
+  }
+
+  Future<void> changeUserDataForClient(
+    String name,
+    String imageUrl,
+    String phoneNumber,
+  ) async {
+    try {
+      final userId = this.userId;
+      final userToken = this.userToken;
+      if (userId != null) {
+        final endpoint = 'http://10.0.2.2:5140/api/Client/$userId';
 
         var formData = http.MultipartRequest('PUT', Uri.parse(endpoint));
         formData.fields.addAll({
@@ -282,7 +335,6 @@ class UserProvider with ChangeNotifier {
         if (response.statusCode == 200) {
           showFlushBar('Data Updated Successfully', isError: false);
           print(response.body);
-          print(formData.fields['skills']);
         } else {
           print("Error updating user data: ${response.statusCode}");
           print("Response body: ${response.body}");
@@ -311,7 +363,7 @@ class UserProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         debugPrint("data is ${response.body}");
         userData = jsonDecode(response.body);
-        ProjectProposal().projectid = userData!['result']['projectsId'];
+        // ProjectProposal().projectid = userData!['result']['projectsId'];
 
         notifyListeners();
       } else {

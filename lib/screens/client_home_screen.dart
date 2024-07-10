@@ -410,7 +410,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                         width: 10,
                                       ),
                                       Text(
-                                        "Random Person",
+                                        "Person",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
@@ -816,7 +816,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                   ),
                                   SizedBox(height: 20),
                                   Text(
-                                    "Random Person",
+                                    "Person",
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -1078,7 +1078,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                 Column(
                                   children: [
                                     Text(
-                                      "Random Person",
+                                      "Person",
                                       style: TextStyle(
                                           fontSize: 17,
                                           fontWeight: FontWeight.bold),
@@ -1211,7 +1211,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                 Column(
                                   children: [
                                     Text(
-                                      "Random Person",
+                                      "Person",
                                       style: TextStyle(
                                           fontSize: 17,
                                           fontWeight: FontWeight.bold),
@@ -1432,7 +1432,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                   width: 10,
                                 ),
                                 Text(
-                                  "Random Person",
+                                  "Person",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
@@ -1487,19 +1487,13 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            'Freelancer',
+                            'Sho8lana',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: KgreenColor,
                                 fontSize: 35),
                           ),
-                          Text(
-                            'Hub',
-                            style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
+                          
                         ],
                       ),
                     ],
@@ -1650,7 +1644,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                         width: 20,
                       ),
                       Text(
-                        "FreelancerHub@gmail.com",
+                        "Sho8lana@gmail.com",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,

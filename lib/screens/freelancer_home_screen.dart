@@ -462,7 +462,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         width: 10,
                                       ),
                                       Text(
-                                        "Random Person",
+                                        "Person",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
@@ -936,7 +936,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   SizedBox(height: 20),
                                   Text(
-                                    "Random Person",
+                                    "Person",
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -1198,7 +1198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Column(
                                   children: [
                                     Text(
-                                      "Random Person",
+                                      "Person",
                                       style: TextStyle(
                                           fontSize: 17,
                                           fontWeight: FontWeight.bold),
@@ -1331,7 +1331,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Column(
                                   children: [
                                     Text(
-                                      "Random Person",
+                                      "Person",
                                       style: TextStyle(
                                           fontSize: 17,
                                           fontWeight: FontWeight.bold),
@@ -1552,7 +1552,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   width: 10,
                                 ),
                                 Text(
-                                  "Random Person",
+                                  "Person",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
