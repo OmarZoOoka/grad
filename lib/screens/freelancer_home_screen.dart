@@ -9,7 +9,6 @@ import 'package:graduation_project/screens/Drawer/settings_screen.dart';
 import 'package:graduation_project/screens/freelancer_profile.dart';
 import 'package:graduation_project/screens/freelancer_setup_screen.dart';
 import 'package:graduation_project/screens/project_information_screen.dart';
-import 'package:graduation_project/services/drawer_model.dart';
 import 'package:graduation_project/services/job_provider.dart';
 import 'package:graduation_project/widgets/category_imgaes_crousal.dart';
 import 'package:graduation_project/services/user_provider.dart';
@@ -35,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
-    final setupStatus = Provider.of<SetupStatusModel>(context, listen: false);
     var jobProvider = Provider.of<JobProvider>(context, listen: false);
 
     List<Map<String, dynamic>> categories = userProvider.categories;
@@ -1850,7 +1848,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ListTile(
                     title: InkWell(
                       onTap: () {
-                        if (setupStatus.isSetupCompleted) {
+                        if (userProvider.isSetupCompletedFreelancer == true) {
                           // If setup is completed, navigate to profile screen
                           Navigator.pushReplacement(
                             context,
@@ -1993,24 +1991,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 250,
                   ),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.logout,
-                          size: 40,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.logout,
+                            size: 40,
+                          ),
+                          onPressed: () async {
+                            await userProvider.logout();
+                          },
                         ),
-                        onPressed: () async {
-                          await userProvider.logout();
-                        },
-                      ),
-                      Text(
-                        "Logout",
-                        style: TextStyle(
-                          fontSize: 24,
-                        ),
-                      )
-                    ],
+                        Text(
+                          "Logout",
+                          style: TextStyle(
+                            fontSize: 24,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),

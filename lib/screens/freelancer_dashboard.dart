@@ -23,17 +23,23 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
+    var showImage = Provider.of<UserProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: CircleAvatar(
-          maxRadius: 25,
-          backgroundImage: AssetImage("assets/images/person-2.jpg"),
+          radius: MediaQuery.of(context).size.width * .07,
+          backgroundImage:
+              NetworkImage(showImage.userData?['result']['imageUrl']),
         ),
         centerTitle: true,
         leading: GestureDetector(
           onTap: () {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FreelancerProfile(),));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FreelancerProfile(),
+                ));
           },
           child: Icon(
             Icons.arrow_back,
@@ -98,47 +104,59 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
             buildDrawerItem(
               'Dashboard',
               Icons.dashboard,
-                  () {
+              () {
                 setState(() {
                   selectedContainer = 'Dashboard';
                 });
                 Navigator.pop(context);
               },
-            ),SizedBox(height: 20,),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             buildDrawerItem(
               'Post Job',
               Icons.post_add,
-                  () {
+              () {
                 setState(() {
                   selectedContainer = 'Post Job';
                 });
                 Navigator.pop(context);
               },
-            ),SizedBox(height: 20,),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             buildDrawerItem(
               'My Orders',
               Icons.mark_email_read_outlined,
-                  () {
+              () {
                 setState(() {
                   selectedContainer = 'My Orders';
                 });
                 Navigator.pop(context);
               },
-            ),SizedBox(height: 20,),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             buildDrawerItem(
               'Projects',
               Icons.document_scanner,
-                  () {
+              () {
                 setState(() {
                   selectedContainer = 'Projects';
                 });
                 Navigator.pop(context);
               },
-            ),SizedBox(height: 20,),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             buildDrawerItem(
               'Edit Profile',
               Icons.mark_email_read_outlined,
-                  () {
+              () {
                 setState(() {
                   selectedContainer = 'Edit Profile';
                 });
@@ -146,29 +164,34 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
               },
             ),
             SizedBox(
-              height: 350,
+              height: 230,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30),
-              child: Row(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.logout,
-                    size: 40,
+                Padding(
+                  padding: const EdgeInsets.only(left: 30, right: 30),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.logout,
+                          size: 40,
+                        ),
+                        onPressed: () async {
+                          await userProvider.logout();
+                        },
+                      ),
+                      Text(
+                        "Logout",
+                        style: TextStyle(
+                          fontSize: 24,
+                        ),
+                      )
+                    ],
                   ),
-                  onPressed: () async {
-                    await userProvider.logout();
-                  },
                 ),
-                Text(
-                  "Logout",
-                  style: TextStyle(
-                    fontSize: 24,
-                  ),
-                )
               ],
-            ),
             ),
           ],
         ),
@@ -186,7 +209,7 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
         return FreelancerMyOrderScreen();
       case 'Projects':
         return FreelancerProjectScreen();
-   
+
       case 'Edit Profile':
         return EditFreelancerProfile();
       default:

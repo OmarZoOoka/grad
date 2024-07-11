@@ -25,12 +25,14 @@ class _ClientDashboardState extends State<ClientDashboard> {
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
     var projectProposal = Provider.of<ProjectProposal>(context);
+    var showImage = Provider.of<UserProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: CircleAvatar(
-          maxRadius: 25,
-          backgroundImage: AssetImage("assets/images/person-2.jpg"),
+          radius: MediaQuery.of(context).size.width * .07,
+          backgroundImage:
+              NetworkImage(showImage.userData?['result']['imageUrl']),
         ),
         centerTitle: true,
         leading: GestureDetector(
@@ -159,8 +161,7 @@ class _ClientDashboardState extends State<ClientDashboard> {
               'Proposal',
               Icons.mark_email_read_outlined,
               () async {
-                await projectProposal
-                    .projectgetproposal(); 
+                await projectProposal.projectgetproposal();
                 print("the proposal data is ${projectProposal.proposalData}");
                 setState(() {
                   selectedContainer = 'Proposal';
@@ -185,22 +186,30 @@ class _ClientDashboardState extends State<ClientDashboard> {
               height: 140,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.logout,
-                    size: 40,
+                Padding(
+                  padding: const EdgeInsets.only(left: 30, right: 30),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.logout,
+                          size: 40,
+                        ),
+                        onPressed: () async {
+                          await userProvider.logout();
+                        },
+                      ),
+                      Text(
+                        "Logout",
+                        style: TextStyle(
+                          fontSize: 24,
+                        ),
+                      )
+                    ],
                   ),
-                  onPressed: () async {
-                    await userProvider.logout();
-                  },
                 ),
-                Text(
-                  "Logout",
-                  style: TextStyle(
-                    fontSize: 24,
-                  ),
-                )
               ],
             ),
           ],

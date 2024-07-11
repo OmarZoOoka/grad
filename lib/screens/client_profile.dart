@@ -112,15 +112,17 @@ class _ClientProfileState extends State<ClientProfile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Center(
-                          child: Container(
-                            height: 65,
-                            width: 65,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50)),
-                            child: imageUrl.isNotEmpty
-                                ? Image.network(imageUrl)
-                                : Container(),
-                          ),
+                          child: imageUrl.isNotEmpty
+                              ? CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .1,
+                                  backgroundImage: NetworkImage(imageUrl))
+                              : CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .1,
+                                  backgroundImage:
+                                      AssetImage("assets/images/wolf.jpg"),
+                                ),
                         ),
                         SizedBox(
                           height: 20,
@@ -469,7 +471,6 @@ class _ClientProfileState extends State<ClientProfile> {
                                       color: KgreenColor,
                                       fontSize: 35),
                                 ),
-                               
                               ],
                             ),
                           ],

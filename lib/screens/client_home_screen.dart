@@ -8,7 +8,6 @@ import 'package:graduation_project/screens/Drawer/privacy_policy_screen.dart';
 import 'package:graduation_project/screens/Drawer/settings_screen.dart';
 import 'package:graduation_project/screens/client_profile.dart';
 import 'package:graduation_project/screens/client_setup_screen.dart';
-import 'package:graduation_project/services/drawer_model.dart';
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +27,6 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
-    final setupStatus = Provider.of<SetupStatusModel>(context, listen: false);
 
     List<String> serviceImages = [
       'assets/images/1.png',
@@ -1493,7 +1491,6 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                                 color: KgreenColor,
                                 fontSize: 35),
                           ),
-                          
                         ],
                       ),
                     ],
@@ -1724,7 +1721,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                   ListTile(
                     title: InkWell(
                       onTap: () {
-                        if (setupStatus.isSetupCompleted) {
+                        if (userProvider.isSetupCompletedClient == true) {
                           // If setup is completed, navigate to profile screen
                           Navigator.pushReplacement(
                             context,
@@ -1867,24 +1864,28 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                   SizedBox(
                     height: 250,
                   ),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.logout,
-                          size: 40,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.logout,
+                            size: 40,
+                          ),
+                          onPressed: () async {
+                            await userProvider.logout();
+                          },
                         ),
-                        onPressed: () async {
-                          await userProvider.logout();
-                        },
-                      ),
-                      Text(
-                        "Logout",
-                        style: TextStyle(
-                          fontSize: 24,
-                        ),
-                      )
-                    ],
+                        Text(
+                          "Logout",
+                          style: TextStyle(
+                            fontSize: 24,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),

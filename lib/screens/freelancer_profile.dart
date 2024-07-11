@@ -117,17 +117,17 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Center(
-                          child: Container(
-                            height: 65,
-                            width: 65,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50)),
-                            child: imageUrl.length != 0
-                                ? CircleAvatar(
-                                    child: Image.network(imageUrl),
-                                  )
-                                : CircleAvatar(),
-                          ),
+                          child: imageUrl.isNotEmpty
+                              ? CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .1,
+                                  backgroundImage: NetworkImage(imageUrl))
+                              : CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * .1,
+                                  backgroundImage:
+                                      AssetImage("assets/images/wolf.jpg"),
+                                ),
                         ),
                         SizedBox(
                           height: 20,
@@ -222,13 +222,13 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
                                           ),
                                         ),
                                         Text(
-                                          "90\$/hr",
+                                          "22\$/hr",
                                           style: TextStyle(
                                             fontSize: 15,
                                           ),
                                         ),
                                         Text(
-                                          "666",
+                                          "23",
                                           style: TextStyle(
                                             fontSize: 15,
                                           ),

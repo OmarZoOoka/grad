@@ -24,6 +24,8 @@ class UserProvider with ChangeNotifier {
   List<Map<String, dynamic>> categories = [];
   List<Map<String, dynamic>> skills = [];
   String role = "";
+  bool isSetupCompletedClient = false;
+  bool isSetupCompletedFreelancer = false;
 
   bool secure = true;
   bool secure2 = true;
@@ -290,6 +292,11 @@ class UserProvider with ChangeNotifier {
 
         if (response.statusCode == 200) {
           showFlushBar('Data Updated Successfully', isError: false);
+          await showData();
+          isSetupCompletedFreelancer == false
+              ? setSetupCompletionStatusFreelancer()
+              : null;
+
           print(response.body);
         } else {
           print("Error updating user data: ${response.statusCode}");
@@ -334,6 +341,9 @@ class UserProvider with ChangeNotifier {
 
         if (response.statusCode == 200) {
           showFlushBar('Data Updated Successfully', isError: false);
+          await showData();
+          isSetupCompletedClient == false ? setSetupCompletionStatusClient() : null;
+
           print(response.body);
         } else {
           print("Error updating user data: ${response.statusCode}");
@@ -363,7 +373,6 @@ class UserProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         debugPrint("data is ${response.body}");
         userData = jsonDecode(response.body);
-        // ProjectProposal().projectid = userData!['result']['projectsId'];
 
         notifyListeners();
       } else {
@@ -384,5 +393,15 @@ class UserProvider with ChangeNotifier {
     Future.delayed(const Duration(milliseconds: 200), () {
       showFlushBar("Logged Out Successfully", isError: false);
     });
+  }
+
+  void setSetupCompletionStatusClient() {
+    isSetupCompletedClient = true;
+    notifyListeners();
+  }
+
+  void setSetupCompletionStatusFreelancer() {
+    isSetupCompletedFreelancer = true;
+    notifyListeners();
   }
 }
