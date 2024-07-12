@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
 import 'package:graduation_project/screens/making_proposal_screen.dart';
 import 'package:graduation_project/services/job_provider.dart';
+import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProjectInformation extends StatelessWidget {
@@ -13,6 +14,8 @@ class ProjectInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var jobProvider = Provider.of<JobProvider>(context, listen: false);
+    var userData = Provider.of<UserProvider>(context, listen: false);
+    final clientdata = userData.userData;
     final Map<String, dynamic>? job =
         jobProvider.jobsData?.firstWhere((job) => job['id'] == projectId);
 
@@ -142,11 +145,13 @@ class ProjectInformation extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildRow("Name:", "Omar"),
+                  _buildRow(
+                      "Name:", clientdata?['result']['name'] ?? 'Unknown'),
                   SizedBox(height: 10),
                   _buildRow("Location:", "Tanta"),
                   SizedBox(height: 10),
-                  _buildRow("Phone Number:", "+201008149222"),
+                  _buildRow("Phone Number:",
+                      clientdata?['result']['phoneNumber'] ?? 'Unknown'),
                 ],
               ),
             ),
@@ -157,8 +162,8 @@ class ProjectInformation extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MakingProposal(projectId: projectId,
-
+                      builder: (context) => MakingProposal(
+                        projectId: projectId,
                       ),
                     ),
                   );
@@ -186,6 +191,7 @@ class ProjectInformation extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
+           
           ],
         ),
       ),

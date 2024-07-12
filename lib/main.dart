@@ -6,6 +6,7 @@ import 'package:graduation_project/services/job_proposal_provider.dart';
 import 'package:graduation_project/services/job_provider.dart';
 import 'package:graduation_project/services/navigation_service.dart';
 import 'package:graduation_project/services/project_proposal_provider.dart';
+import 'package:graduation_project/services/reply_proposal_provider.dart';
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,7 @@ void main() async {
         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
         ChangeNotifierProvider<JobProvider>(create: (_) => JobProvider()),
         ChangeNotifierProvider<JobProposal>(create: (_) => JobProposal()),
+                ChangeNotifierProvider<ReplyProposal>(create: (_) => ReplyProposal()),
         ChangeNotifierProvider<ProjectProposal>(
             create: (_) => ProjectProposal()),
         ChangeNotifierProvider<NavigationService>(

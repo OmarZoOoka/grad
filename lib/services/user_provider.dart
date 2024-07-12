@@ -9,6 +9,7 @@ import 'package:graduation_project/services/job_proposal_provider.dart';
 import 'package:graduation_project/services/job_provider.dart';
 import 'package:graduation_project/services/navigation_service.dart';
 import 'package:graduation_project/services/project_proposal_provider.dart';
+import 'package:graduation_project/services/reply_proposal_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -88,7 +89,8 @@ class UserProvider with ChangeNotifier {
           Provider.of<JobProvider>(context, listen: false).token = token;
           Provider.of<JobProposal>(context, listen: false).token = token;
           Provider.of<ProjectProposal>(context, listen: false).token = token;
-
+          Provider.of<ProjectProposal>(context, listen: false).userId = userId;
+          Provider.of<ReplyProposal>(context, listen: false).token = token;
           if (role == 'Freelancer') {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
@@ -342,7 +344,9 @@ class UserProvider with ChangeNotifier {
         if (response.statusCode == 200) {
           showFlushBar('Data Updated Successfully', isError: false);
           await showData();
-          isSetupCompletedClient == false ? setSetupCompletionStatusClient() : null;
+          isSetupCompletedClient == false
+              ? setSetupCompletionStatusClient()
+              : null;
 
           print(response.body);
         } else {

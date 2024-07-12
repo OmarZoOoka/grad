@@ -3,9 +3,10 @@ import 'package:graduation_project/constants.dart';
 import 'package:graduation_project/screens/freelancer_dashboard/edit_freelancer_profile.dart';
 import 'package:graduation_project/screens/freelancer_dashboard/freelancer_dashboard_screen.dart';
 import 'package:graduation_project/screens/freelancer_dashboard/freelancer_my_order_screen.dart';
-import 'package:graduation_project/screens/freelancer_dashboard/freelancer_post_job_screen.dart';
+import 'package:graduation_project/screens/freelancer_dashboard/freelancer_proposals_screen.dart';
 import 'package:graduation_project/screens/freelancer_dashboard/freelancer_projects_screen.dart';
 import 'package:graduation_project/screens/freelancer_profile.dart';
+import 'package:graduation_project/services/project_proposal_provider.dart';
 
 import 'package:graduation_project/services/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context);
     var showImage = Provider.of<UserProvider>(context);
+    var projectgetproposal = Provider.of<ProjectProposal>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -115,11 +117,13 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
               height: 20,
             ),
             buildDrawerItem(
-              'Post Job',
+              'Proposals',
               Icons.post_add,
-              () {
+              () async{
+                await projectgetproposal.getProjectProposal();
+                print("the proposal data is ${projectgetproposal.proposalDataFreelancer}");
                 setState(() {
-                  selectedContainer = 'Post Job';
+                  selectedContainer = 'Proposals';
                 });
                 Navigator.pop(context);
               },
@@ -203,8 +207,8 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
     switch (selectedContainer) {
       case 'Dashboard':
         return FreelancerDashboardScreen();
-      case 'Post Job':
-        return FreelancerPostJobScreen();
+      case 'Proposals':
+        return FreelancerProposalsScreen();
       case 'My Orders':
         return FreelancerMyOrderScreen();
       case 'Projects':

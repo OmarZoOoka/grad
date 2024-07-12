@@ -88,7 +88,7 @@ class _FreelancerProfileState extends State<FreelancerProfile> {
             userProvider.showData();
             return Center(child: CircularProgressIndicator());
           } else {
-            // Data has been fetched, proceed with building UI
+            // Data has been fetched, proceed with building UI  
             final String name = userData['result']['name'] ?? 'Unknown';
             final String imageUrl = userData['result']['imageUrl'] ?? "";
             final int jobTitle = userData['result']['categoryId'] ?? "";

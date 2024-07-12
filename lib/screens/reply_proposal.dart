@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:graduation_project/constants.dart';
 import 'package:graduation_project/screens/client_dashboard.dart';
+import 'package:graduation_project/services/reply_proposal_provider.dart';
+import 'package:provider/provider.dart';
 
 class ReplyProposalScreen extends StatefulWidget {
   const ReplyProposalScreen({Key? key}) : super(key: key);
@@ -12,9 +14,12 @@ class ReplyProposalScreen extends StatefulWidget {
 
 class _ReplyProposalScreenState extends State<ReplyProposalScreen> {
   String? _selectedOption;
+  final TextEditingController noteController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final jobProvider = Provider.of<ReplyProposal>(context);
+
     return Scaffold(
       backgroundColor: KoffwhiteColor,
       appBar: AppBar(
@@ -92,6 +97,7 @@ class _ReplyProposalScreenState extends State<ReplyProposalScreen> {
                   Container(
                     height: 350,
                     child: TextFormField(
+                      controller: noteController,
                       decoration: InputDecoration(
                         hintText: "Enter your notes here",
                         border: OutlineInputBorder(),
@@ -109,7 +115,16 @@ class _ReplyProposalScreenState extends State<ReplyProposalScreen> {
                   ),
                   Center(
                     child: InkWell(
-                      onTap: () {
+                      onTap: () async {
+                        bool isAccepted = _selectedOption == 'Accept';
+
+                        await jobProvider.replyProposal(
+                          context,
+                          token: jobProvider.token!,
+                          isAccepted: isAccepted,
+                          note: noteController.text,
+                        );
+
                         Flushbar flushbar = Flushbar(
                           message: 'Proposal Sent',
                           messageText: Text(
