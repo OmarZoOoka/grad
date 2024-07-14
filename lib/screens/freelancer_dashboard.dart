@@ -5,6 +5,7 @@ import 'package:graduation_project/screens/freelancer_dashboard/freelancer_dashb
 import 'package:graduation_project/screens/freelancer_dashboard/freelancer_my_order_screen.dart';
 import 'package:graduation_project/screens/freelancer_dashboard/freelancer_proposals_screen.dart';
 import 'package:graduation_project/screens/freelancer_dashboard/freelancer_projects_screen.dart';
+import 'package:graduation_project/screens/freelancer_dashboard/sub_project_screen.dart';
 import 'package:graduation_project/screens/freelancer_profile.dart';
 import 'package:graduation_project/services/project_proposal_provider.dart';
 
@@ -119,11 +120,25 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
             buildDrawerItem(
               'Proposals',
               Icons.post_add,
-              () async{
+              () async {
                 await projectgetproposal.getProjectProposal();
-                print("the proposal data is ${projectgetproposal.proposalDataFreelancer}");
+                print(
+                    "the proposal data is ${projectgetproposal.proposalDataFreelancer}");
                 setState(() {
                   selectedContainer = 'Proposals';
+                });
+                Navigator.pop(context);
+              },
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            buildDrawerItem(
+              'SubProjects',
+              Icons.data_object,
+              () async {
+                setState(() {
+                  selectedContainer = 'SubProjects';
                 });
                 Navigator.pop(context);
               },
@@ -168,7 +183,7 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
               },
             ),
             SizedBox(
-              height: 230,
+              height: 150,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -207,6 +222,8 @@ class _FreelancerDashboardState extends State<FreelancerDashboard> {
     switch (selectedContainer) {
       case 'Dashboard':
         return FreelancerDashboardScreen();
+      case 'SubProjects':
+        return SubProjectScreen();
       case 'Proposals':
         return FreelancerProposalsScreen();
       case 'My Orders':

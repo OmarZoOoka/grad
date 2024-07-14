@@ -27,22 +27,6 @@ class _MakingProposalState extends State<MakingProposal> {
     super.dispose();
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(DateTime.now().year + 1),
-    );
-    if (picked != null) {
-      setState(() {
-        String formattedDate =
-            "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
-        deliverDateController.text = formattedDate;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     var jobProposal = Provider.of<JobProposal>(context);

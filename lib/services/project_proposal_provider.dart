@@ -13,7 +13,7 @@ class ProjectProposal with ChangeNotifier {
     print("token is $token");
     try {
       final response = await http.get(
-        Uri.parse('http://10.0.2.2:5140/api/ProjectProposal/1'),
+        Uri.parse('http://10.0.2.2:5140/api/ProjectProposal/1002'),
         headers: <String, String>{
           'Authorization': 'Bearer ${token}',
         },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project/constants.dart';
+import 'package:graduation_project/screens/create_sub_project.dart';
 import 'package:graduation_project/services/project_proposal_provider.dart';
 import 'package:graduation_project/widgets/proposal_row_widget.dart';
 import 'package:provider/provider.dart';
@@ -133,7 +134,13 @@ class _FreelancerProposalsScreenState extends State<FreelancerProposalsScreen> {
                         SizedBox(height: 20),
                         Center(
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SubProject(),
+                                  ));
+                            },
                             child: Container(
                               height: 60,
                               width: 200,
